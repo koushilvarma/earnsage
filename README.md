@@ -52,6 +52,24 @@ We have chosen to build a Progressive Web App (PWA). Gig workers are constantly 
 
 ---
 
+## Adversarial Defense & Anti-Spoofing Strategy
+In response to emerging threats of coordinated GPS spoofing and fraud rings within the gig economy, Earn Sage employs a multi-layered, AI-driven defense mechanism. Simple GPS verification is insufficient; our architecture assumes device level location data is compromised and relies on secondary telemetry and behavioral anomalies.
+
+### 1. The Differentiation (AI/ML Architecture)
+Our fraud detection engine does not just look at *where* the device claims to be, but *how* it got there and how it is behaving. 
+* **Velocity & Teleportation Checks:** Our system calculates the time-distance ratio between the last verified delivery drop-off and the disruption zone. If a worker teleports into a red alert weather zone impossibly fast, the claim is flagged.
+* **Micro Movement Analysis:** A genuine delivery partner stuck in a storm exhibits erratic micro movements (seeking shelter, minor GPS drift from cloud cover). A spoofed location often broadcasts a mathematically perfect, static coordinate, or an artificial, uniform movement path. Our ML anomaly detection models easily separate organic drift from synthetic coordinates.
+To detect coordinated fraud rings, our NestJS backend analyzes cross-sectional data points across the entire active user base:
+* **IP & Network Clustering:** We monitor for dozens of claims originating from the same IP address range or known VPN subnets, which indicates a coordinated localized attack rather than scattered workers on cellular data.
+
+### 2. The UX Balance
+We must protect our liquidity pool without penalizing honest workers suffering from genuine network drops during bad weather.
+* **Soft Flagging & Asynchronous Processing:** If a claim triggers the fraud threshold, the system does not outright reject it. Instead, the UI informs the worker: *"Your disruption claim has been safely logged. Due to network congestion in your area, payout processing will complete in 1-2 hours."* This removes the "instant" gratification for scammers, breaking their automated loops, while keeping the honest worker assured.
+* **Proof of Life:** If a claim is heavily flagged, the Next.js PWA prompts a simple, low bandwidth secondary check, such as requesting a live, compressed photo of the surroundings, which is difficult for emulator farms to replicate organically at scale.
+
+
+---
+
 ## Tech Stack & Architecture
 * **Frontend:** Next.js, Tailwind CSS
 * **Backend:** NestJS
