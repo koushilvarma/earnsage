@@ -1,180 +1,188 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, MapPin, Info, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
-const platforms = ["Zomato", "Swiggy", "Zepto", "Blinkit", "Dunzo"];
+// --- Sub-components ---
+const StepIndicator = ({ step }: { step: number }) => (
+  <div className="w-full flex flex-col gap-4 mb-8">
+    <div className="flex justify-between items-center text-sm">
+      <span className="text-text-muted">Step {step} of 3</span>
+      <span className="text-primary font-bold">{Math.round((step / 3) * 100)}% Complete</span>
+    </div>
+    <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+      <motion.div 
+        initial={{ width: 0 }}
+        animate={{ width: `${(step / 3) * 100}%` }}
+        className="h-full bg-primary"
+      />
+    </div>
+  </div>
+);
 
-export default function RegistrationPage() {
+const InputField = ({ label, placeholder, type = "text", prefix, error, success }: any) => (
+  <div className="space-y-2 mb-6">
+    <label className="text-caption text-text-muted uppercase tracking-wider font-semibold">
+      {label}
+    </label>
+    <div className="relative">
+      {prefix && (
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 px-2 py-1 rounded-md text-sm font-bold border border-white/10 text-white">
+          {prefix}
+        </div>
+      )}
+      <input
+        type={type}
+        placeholder={placeholder}
+        className={cn(
+          "w-full h-14 bg-white/5 border-1.5 border-white/10 rounded-xl px-4 text-base text-white placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/15 transition-all",
+          prefix && "pl-16",
+          error && "border-danger",
+          success && "border-accent"
+        )}
+      />
+      {success && <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 text-accent w-5 h-5" />}
+    </div>
+  </div>
+);
+
+export default function Register() {
+  const [step, setStep] = useState(1);
+  const [otp, setOtp] = useState(['', '', '', '']);
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    mobile: '',
-    platform: 'Zomato',
-    city: 'Bengaluru',
-    radius: 5
-  });
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) value = value[0];
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+    
+    if (value && index < 3) {
+      const nextInput = document.getElementById(`otp-${index + 1}`);
+      nextInput?.focus();
+    }
+  };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F7FA]">
-      {/* Progress Bar */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] h-1.5 bg-gray-200 z-50">
-        <motion.div 
-          initial={{ width: "33%" }}
-          animate={{ width: "66%" }}
-          className="h-full bg-primary"
-        />
-      </div>
-
-      {/* Header */}
-      <header className="px-6 pt-8 pb-4 flex items-center gap-4">
-        <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm active:scale-90 transition-transform">
-          <ArrowLeft size={20} className="text-secondary" />
+    <div className="mobile-wrapper bg-secondary text-white p-6">
+      <header className="flex items-center justify-between mb-8 pt-6">
+        <button onClick={() => step > 1 ? setStep(step - 1) : router.back()} className="touch-target -ml-4">
+          <ChevronLeft className="w-6 h-6" />
         </button>
-        <span className="text-[10px] font-bold text-secondary/40 uppercase tracking-[0.2em] pt-1">Step 2 of 3</span>
+        <h1 className="text-heading">Create Account</h1>
+        <div className="w-10" /> {/* Spacer */}
       </header>
 
-      <main className="flex-1 px-6 pb-32">
-        <div className="mb-8">
-          <h1 className="text-3xl font-extrabold text-secondary tracking-tight">Your Profile</h1>
-          <p className="text-text-dim text-sm font-medium mt-1">Help AI calculate your weather risk</p>
-        </div>
-        
-        <div className="space-y-8">
-          {/* Full Name */}
-          <div className="space-y-3">
-            <Label className="text-text-dim text-[10px] font-bold uppercase tracking-[0.15em] ml-1">Full Name</Label>
-            <Input 
-              placeholder="e.g. Ravi Kumar" 
-              className="h-[56px] rounded-2xl border-gray-200 bg-white text-base px-5 focus:ring-primary/10 focus:border-primary shadow-sm font-medium"
-            />
-          </div>
+      <StepIndicator step={step} />
 
-          {/* Mobile Number */}
-          <div className="space-y-3">
-            <Label className="text-text-dim text-[10px] font-bold uppercase tracking-[0.15em] ml-1">Mobile Number</Label>
-            <div className="relative group">
-              <span className="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-secondary pr-3 border-r border-gray-100">+91</span>
-              <Input 
-                placeholder="00000 00000" 
-                type="tel"
-                className="h-[56px] rounded-2xl border-gray-200 bg-white text-base pl-[68px] pr-5 focus:ring-primary/10 focus:border-primary shadow-sm font-medium tracking-wide"
-              />
-            </div>
-          </div>
-
-          {/* Platform Selector */}
-          <div className="space-y-4">
-            <Label className="text-text-dim text-[10px] font-bold uppercase tracking-[0.15em] ml-1">Work Platform</Label>
-            <div className="flex flex-wrap gap-2.5">
-              {platforms.map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setFormData({...formData, platform: p})}
-                  className={cn(
-                    "px-6 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300",
-                    formData.platform === p 
-                      ? "bg-secondary text-white shadow-xl shadow-secondary/20 scale-[1.02]" 
-                      : "bg-white text-secondary border border-gray-200 hover:border-primary/50"
-                  )}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Delivery Zone - Map Placeholder */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between ml-1">
-              <Label className="text-text-dim text-[10px] font-bold uppercase tracking-[0.15em]">Delivery Zone</Label>
-              <div className="flex items-center gap-1.5 text-[9px] bg-secondary/5 px-2.5 py-1 rounded-full text-secondary font-bold uppercase tracking-wider">
-                <Info size={10} className="text-primary" />
-                Smart Trigger Accuracy
-              </div>
-            </div>
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <motion.div
+            key="step1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="flex-1 flex flex-col"
+          >
+            <h2 className="text-display-l mb-2">Basic Info</h2>
+            <p className="text-text-muted text-sm mb-8">Enter your details exactly as per your Aadhaar/Driving License.</p>
             
-            <div className="relative rounded-3xl overflow-hidden border-4 border-white shadow-card aspect-[4/3] bg-gray-100 group cursor-pointer">
-              {/* Fake Map Background */}
-              <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800')" }}
-              />
-              <div className="absolute inset-0 bg-secondary/10" />
-              
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <motion.div 
-                  initial={{ y: -15, opacity: 0 }} 
-                  animate={{ y: 0, opacity: 1 }} 
-                  transition={{ type: "spring", damping: 12, stiffness: 200 }}
-                  className="z-10 relative"
-                >
-                  <MapPin size={48} className="text-primary fill-primary/20" />
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-1.5 bg-black/20 rounded-full blur-[2px]" />
-                </motion.div>
-                <div className="w-24 h-24 rounded-full border-2 border-primary/30 bg-primary/10 animate-ping absolute duration-1000" />
+            <InputField label="Full Name" placeholder="Your full name" />
+            <InputField label="Mobile Number" placeholder="XXXXXXXXXX" prefix="+91" type="tel" success={true} />
+            
+            {/* OTP Section simulated inline after mobile */}
+            <div className="space-y-4 mb-8">
+              <label className="text-caption text-text-muted uppercase tracking-wider font-semibold">
+                OTP Verification
+              </label>
+              <div className="flex justify-between gap-4">
+                {otp.map((digit, i) => (
+                  <input
+                    key={i}
+                    id={`otp-${i}`}
+                    type="tel"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(i, e.target.value)}
+                    className="w-full h-16 bg-white/5 border-1.5 border-accent/40 rounded-xl text-center text-2xl font-space-mono text-white focus:outline-none focus:border-accent"
+                  />
+                ))}
               </div>
-
-              <div className="absolute top-4 left-4 right-4 glass rounded-[20px] px-5 py-4 flex items-center justify-between shadow-lg border border-white/40">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
-                    <MapPin size={18} className="text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-text-dim uppercase tracking-[0.1em] mb-1 opacity-70">Detecting Zone</p>
-                    <p className="text-sm font-extrabold text-secondary leading-none">Koramangala, Bengaluru</p>
-                  </div>
-                </div>
-                <ChevronDown size={20} className="text-text-dim opacity-50" />
-              </div>
-
-              <div className="absolute bottom-4 left-4 right-4 bg-secondary/90 backdrop-blur-md rounded-xl p-3 text-center">
-                <p className="text-white text-[10px] font-bold uppercase tracking-widest">Tap to refine location</p>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-text-muted">Resend in 00:45</span>
+                <button className="text-primary font-bold">Resend OTP</button>
               </div>
             </div>
-          </div>
 
-          {/* Radius Slider */}
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <Label className="text-secondary text-[11px] font-extrabold uppercase tracking-widest block mb-1">Protection Radius</Label>
-                <p className="text-text-dim text-[10px] font-medium leading-none">Radius for weather triggers</p>
+            <Button className="w-full mt-auto mb-4" size="xl" onClick={() => setStep(2)}>
+              Continue <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div
+            key="step2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="flex-1 flex flex-col"
+          >
+            <h2 className="text-display-l mb-2">Age Verification</h2>
+            <p className="text-text-muted text-sm mb-8">You must be 18+ to be eligible for income protection.</p>
+            
+            <div className="space-y-4 mb-12">
+              <label className="text-caption text-text-muted uppercase tracking-wider font-semibold">
+                Date of Birth
+              </label>
+              <div className="flex gap-4">
+                <div className="flex-1 h-16 bg-white/5 border-1.5 border-white/10 rounded-xl flex items-center justify-center text-lg font-space-mono">DD</div>
+                <div className="flex-1 h-16 bg-white/5 border-1.5 border-white/10 rounded-xl flex items-center justify-center text-lg font-space-mono">MM</div>
+                <div className="flex-1 h-16 bg-white/5 border-1.5 border-white/10 rounded-xl flex items-center justify-center text-lg font-space-mono">YYYY</div>
               </div>
-              <div className="bg-primary/10 px-3 py-1.5 rounded-xl">
-                 <span className="text-primary font-black text-lg font-mono leading-none">{formData.radius}km</span>
+              <p className="text-[11px] text-text-muted italic">Click to open our simplified date selector</p>
+            </div>
+
+            <Button className="w-full mt-auto mb-4" size="xl" onClick={() => setStep(3)}>
+              Verify Age <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </motion.div>
+        )}
+
+        {step === 3 && (
+          <motion.div
+            key="step3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="flex-1 flex flex-col"
+          >
+            <h2 className="text-display-l mb-2">Complete Profile</h2>
+            <p className="text-text-muted text-sm mb-8">Almost there! We just need your delivery zone info next.</p>
+            
+            <div className="bg-accent/10 border border-accent/20 p-6 rounded-2xl mb-8 flex items-start gap-4">
+              <CheckCircle2 className="text-accent w-6 h-6 shrink-0 mt-1" />
+              <div className="space-y-1">
+                <h4 className="font-bold text-white uppercase text-xs">KYC Verified</h4>
+                <p className="text-xs text-text-muted leading-relaxed">Your basic details have been successfully mapped to our partner registry.</p>
               </div>
             </div>
-            <Slider 
-              defaultValue={[5]} 
-              max={10} 
-              min={1} 
-              step={1} 
-              onValueChange={([v]) => setFormData({...formData, radius: v})}
-              className="py-2"
-            />
-          </div>
-        </div>
-      </main>
 
-      {/* Sticky Bottom CTA */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] p-6 pt-2 bg-gradient-to-t from-[#F5F7FA] via-[#F5F7FA]/90 to-transparent z-40">
-        <Button 
-          onClick={() => router.push('/risk-profile')}
-          className="w-full h-[64px] rounded-full text-lg font-extrabold bg-primary hover:bg-primary/95 text-white shadow-[0_20px_40px_rgba(255,107,43,0.3)] group transition-all active:scale-95 flex items-center justify-center gap-3"
-        >
-          Analyze My Risk
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-1">
-            <ChevronRight size={18} />
-          </div>
-        </Button>
+            <Button className="w-full mt-auto mb-4" size="xl" onClick={() => router.push('/onboarding/profile')}>
+              Setup Delivery Profile <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="text-center pb-4">
+        <p className="text-[11px] text-text-muted max-w-[80%] mx-auto leading-relaxed">
+          By continuing, you agree to our <span className="underline">Terms of Service</span> and <span className="underline">Privacy Policy</span>.
+        </p>
       </div>
     </div>
   );

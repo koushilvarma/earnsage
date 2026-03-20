@@ -1,92 +1,54 @@
-import * as React from 'react'
+"use client";
 
-import { cn } from '@/lib/utils'
+import * as React from 'react';
+import { motion, HTMLMotionProps } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
-function Card({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card"
-      className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm',
-        className,
-      )}
-      {...props}
-    />
-  )
+interface CardProps extends HTMLMotionProps<"div"> {
+  variant?: 'base' | 'elevated' | 'dark' | 'gradient' | 'status';
+  statusColor?: string;
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-header"
-      className={cn(
-        '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
-        className,
-      )}
-      {...props}
-    />
-  )
-}
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = 'base', statusColor, ...props }, ref) => {
+    const styles = {
+      base: 'bg-surface-card shadow-card rounded-lg p-4',
+      elevated: 'bg-surface-card shadow-raised rounded-lg p-5',
+      dark: 'bg-brand-navy-mid rounded-lg p-4 border border-white/10 text-white',
+      gradient: 'bg-gradient-to-br from-brand-navy to-brand-navy-light rounded-xl p-5 text-white overflow-hidden',
+      status: 'bg-surface-card rounded-lg p-4 shadow-card',
+    };
 
-function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-title"
-      className={cn('leading-none font-semibold', className)}
-      {...props}
-    />
-  )
-}
+    return (
+      <motion.div
+        ref={ref}
+        className={cn(styles[variant], variant === 'status' && 'border-l-4', className)}
+        style={variant === 'status' ? { borderLeftColor: statusColor } : {}}
+        {...props}
+      />
+    );
+  }
+);
+Card.displayName = 'Card';
 
-function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn('text-muted-foreground text-sm', className)}
-      {...props}
-    />
-  )
-}
+const CardHeader = ({ className, ...props }: React.ComponentProps<'div'>) => (
+  <div className={cn('flex flex-col space-y-1.5 pb-4', className)} {...props} />
+);
 
-function CardAction({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
-        className,
-      )}
-      {...props}
-    />
-  )
-}
+const CardTitle = ({ className, ...props }: React.ComponentProps<'h3'>) => (
+  <h3 className={cn('text-heading text-text-primary dark:text-white', className)} {...props} />
+);
 
-function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn('px-6', className)}
-      {...props}
-    />
-  )
-}
+const CardDescription = ({ className, ...props }: React.ComponentProps<'p'>) => (
+  <p className={cn('text-caption text-text-muted', className)} {...props} />
+);
 
-function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn('flex items-center px-6 [.border-t]:pt-6', className)}
-      {...props}
-    />
-  )
-}
+const CardContent = ({ className, ...props }: React.ComponentProps<'div'>) => (
+  <div className={cn('pt-0', className)} {...props} />
+);
 
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
-}
+const CardFooter = ({ className, ...props }: React.ComponentProps<'div'>) => (
+  <div className={cn('flex items-center pt-4', className)} {...props} />
+);
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };

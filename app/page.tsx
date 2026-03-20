@@ -2,139 +2,233 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CloudRain, Zap, Wallet, ChevronRight, Shield } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { Shield, Zap, CloudRain, ShieldCheck, ArrowRight, Smartphone, Banknote } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-const onboardingSteps = [
+// --- Screen 0: Splash ---
+const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(onFinish, 2800);
+    return () => clearTimeout(timer);
+  }, [onFinish]);
+
+  return (
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,_#0A1628_0%,_#051020_100%)]">
+      {/* Rain Particles */}
+      {[...Array(40)].map((_, i) => (
+        <div
+          key={i}
+          className="rain-particle"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `-${Math.random() * 20}%`,
+            opacity: Math.random() * 0.5,
+            animationDelay: `${Math.random() * 2}s`,
+            animationDuration: `${1 + Math.random() * 1}s`,
+          }}
+        />
+      ))}
+
+      <motion.div
+        initial={{ scale: 0.7, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.3 }}
+        className="relative mb-6"
+      >
+        <div className="absolute inset-0 blur-2xl bg-primary/20 rounded-full" />
+        <div className="relative w-20 h-20 bg-gradient-to-br from-primary to-[#FF8F5E] rounded-2xl flex items-center justify-center shadow-orange">
+          <Shield className="text-white w-10 h-10" />
+          <Zap className="absolute text-white w-5 h-5 bottom-4 right-4" />
+        </div>
+      </motion.div>
+
+      <motion.h1
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.7 }}
+        className="text-display-xl text-white mb-2"
+      >
+        EARN SAGE
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="text-text-muted font-dm-sans text-sm tracking-wide"
+      >
+        Earn Every Day. Protected Always.
+      </motion.p>
+
+      {/* Loading Bar */}
+      <div className="absolute bottom-20 w-48 h-[2px] bg-white/10 overflow-hidden rounded-full">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: '100%' }}
+          transition={{ duration: 1.8, delay: 0.5, ease: 'easeInOut' }}
+          className="h-full bg-primary"
+        />
+      </div>
+    </div>
+  );
+};
+
+// --- Screen 1: Onboarding ---
+const onboardingSlides = [
   {
-    title: "Disruption Happens",
-    description: "Unexpected rain or floods put your daily earnings at risk.",
+    id: 1,
+    number: "4.2",
+    unit: "disruption days per month",
+    headline: "Rain stops you. Income shouldn't.",
+    sub: "Every heavy rainfall, flood, or curfew costs you ₹500–₹1,200 in lost earnings.",
     icon: CloudRain,
-    color: "text-blue-500",
-    bg: "bg-blue-50"
+    color: "primary"
   },
   {
-    title: "AI Detects Triggers",
-    description: "Our AI monitors weather and zone activity in real-time.",
-    icon: Zap,
-    color: "text-alert",
-    bg: "bg-amber-50"
+    id: 2,
+    icon: ShieldCheck,
+    headline: "Zero claims. Zero paperwork.",
+    sub: "Our AI watches weather, AQI and civic alerts in your zone 24/7.",
+    steps: [
+      { id: "📡", label: "AI Detects" },
+      { id: "⚡", label: "Trigger Met" },
+      { id: "💸", label: "Auto Payout" },
+    ]
   },
   {
-    title: "You Get Paid Instantly",
-    description: "Money sent directly into your wallet. No claims, no waiting.",
-    icon: Wallet,
-    color: "text-accent",
-    bg: "bg-emerald-50"
+    id: 3,
+    icon: Banknote,
+    headline: "Less than ₹7/day for income protection.",
+    sub: "Auto-deducted weekly. Cancel anytime.",
+    stats: [
+      { val: "₹49 / week", label: "Premium" },
+      { val: "Up to ₹2,100", label: "Weekly Protection" },
+      { val: "10,000+", label: "Partners Protected" },
+    ]
   }
 ];
 
-export default function OnboardingPage() {
-  const [step, setStep] = useState(0);
+export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const router = useRouter();
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
   if (showSplash) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen bg-secondary relative overflow-hidden">
-        {/* Rain background animation */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div 
-              key={i} 
-              className="rain-drop" 
-              style={{ 
-                left: `${Math.random() * 100}%`, 
-                animationDuration: `${0.5 + Math.random() * 0.5}s`,
-                animationDelay: `${Math.random() * 2}s`
-              }} 
-            />
-          ))}
-        </div>
-        
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="z-10 flex flex-col items-center"
-        >
-          <div className="w-20 h-20 bg-primary rounded-[24px] flex items-center justify-center shadow-[0_20px_50px_rgba(255,107,43,0.3)] mb-8">
-            <Shield size={42} className="text-white" fill="white" />
-          </div>
-          <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight sans italic">Earn Sage</h1>
-          <div className="h-[2px] w-12 bg-primary/40 rounded-full mb-4" />
-          <p className="text-white/40 font-bold tracking-[0.2em] uppercase text-[10px]">Protected Always</p>
-        </motion.div>
-      </div>
-    );
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
 
-  const currentStep = onboardingSteps[step];
-  const Icon = currentStep.icon;
-
   return (
-    <div className="flex flex-col h-screen bg-white">
-      <div className="flex-1 flex flex-col items-center justify-center px-8 text-center pt-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="flex flex-col items-center"
-          >
-            <div className={cn("w-36 h-36 rounded-full flex items-center justify-center mb-10 shadow-sm transition-colors duration-500", currentStep.bg)}>
-              <Icon size={72} className={cn("transition-transform duration-500", currentStep.color)} />
-            </div>
-            <h2 className="text-3xl font-extrabold text-text-main mb-4 tracking-tight leading-tight">
-              {currentStep.title}
-            </h2>
-            <p className="text-text-dim text-lg leading-relaxed max-w-[300px] font-medium">
-              {currentStep.description}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      <div className="px-8 pb-12 space-y-10">
-        <div className="flex justify-center gap-2.5">
-          {onboardingSteps.map((_, i) => (
-            <motion.div 
-              key={i}
-              initial={false}
-              animate={{ 
-                width: i === step ? 32 : 8,
-                backgroundColor: i === step ? "#FF6B2B" : "#E5E7EB"
-              }}
-              className="h-2 rounded-full"
-            />
-          ))}
-        </div>
-
-        <div className="space-y-6">
-          <Button 
-            onClick={() => step < onboardingSteps.length - 1 ? setStep(s => s + 1) : router.push('/register')}
-            className="w-full h-[60px] rounded-full text-lg font-bold bg-primary hover:bg-primary/95 text-white shadow-[0_15px_30px_rgba(255,107,43,0.25)] transition-all active:scale-[0.98]"
-          >
-            {step === onboardingSteps.length - 1 ? "Start Earning with Protection" : "Next Step"}
-            {step < onboardingSteps.length - 1 && <ChevronRight className="ml-2" size={20} />}
-          </Button>
-          
-          <div className="text-center pb-safe">
-            <span className="text-text-dim font-medium">Already a partner? </span>
-            <Link href="/login" className="text-primary font-bold hover:underline">Log in</Link>
+    <div className="mobile-wrapper bg-secondary text-white font-dm-sans">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ x: 300, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -300, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          className="flex-1 flex flex-col p-6 pt-12"
+        >
+          <div className="flex justify-end mb-8">
+            <button 
+              onClick={() => router.push('/register')}
+              className="text-text-muted text-sm hover:text-white transition-colors"
+            >
+              Skip
+            </button>
           </div>
-        </div>
-      </div>
+
+          <div className="flex-1 flex flex-col justify-center">
+            {onboardingSlides[currentSlide].number ? (
+              <div className="mb-8">
+                <div className="text-[72px] font-space-mono text-primary leading-none mb-2">
+                  {onboardingSlides[currentSlide].number}
+                </div>
+                <div className="text-text-muted uppercase tracking-[0.2em] font-space-mono text-sm">
+                  {onboardingSlides[currentSlide].unit}
+                </div>
+              </div>
+            ) : (
+              <div className="mb-12 w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center">
+                {React.createElement(onboardingSlides[currentSlide].icon, {
+                  className: "text-primary w-10 h-10"
+                })}
+              </div>
+            )}
+
+            <h2 className="text-display-l mb-4 leading-tight">
+              {onboardingSlides[currentSlide].headline}
+            </h2>
+            <p className="text-text-muted text-base mb-12 max-w-[90%]">
+              {onboardingSlides[currentSlide].sub}
+            </p>
+
+            {onboardingSlides[currentSlide].steps && (
+              <div className="flex items-center justify-between mb-12 bg-white/5 p-6 rounded-2xl border border-white/10">
+                {onboardingSlides[currentSlide].steps.map((step, i) => (
+                  <React.Fragment key={step.label}>
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="text-2xl">{step.id}</div>
+                      <div className="text-[10px] uppercase font-bold text-text-muted">{step.label}</div>
+                    </div>
+                    {i < 2 && <ArrowRight className="text-white/20 w-4 h-4" />}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+
+            {onboardingSlides[currentSlide].stats && (
+              <div className="space-y-4 mb-12">
+                {onboardingSlides[currentSlide].stats.map((stat) => (
+                  <div key={stat.label} className="bg-white/5 p-4 rounded-xl flex justify-between items-center">
+                    <span className="text-base font-semibold">{stat.val}</span>
+                    <span className="text-text-muted text-sm">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-auto space-y-8">
+            <div className="flex justify-center gap-2">
+              {onboardingSlides.map((_, i) => (
+                <div 
+                  key={i}
+                  className={cn(
+                    "h-2 rounded-full transition-all duration-300",
+                    i === currentSlide ? "w-8 bg-primary" : "w-2 bg-white/20"
+                  )}
+                />
+              ))}
+            </div>
+
+            <Button 
+              className="w-full" 
+              size="xl"
+              onClick={() => {
+                if (currentSlide < onboardingSlides.length - 1) {
+                  setCurrentSlide(prev => prev + 1);
+                } else {
+                  router.push('/register');
+                }
+              }}
+            >
+              {currentSlide === onboardingSlides.length - 1 ? "Get Protected Now" : "Continue"}
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+
+            <div className="text-center">
+              <button 
+                onClick={() => router.push('/register')}
+                className="text-text-muted text-sm"
+              >
+                Already a partner? <span className="text-primary font-bold">Sign in</span>
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

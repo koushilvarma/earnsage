@@ -1,0 +1,260 @@
+﻿
+> my-project@0.1.0 build C:\Users\KOUSHIL VARMA\OneDrive\Desktop\guidewire\EarnSage
+> next build
+
+Ôû▓ Next.js 16.2.0 (Turbopack)
+
+  Creating an optimized production build ...
+node.exe : Found 1 
+warning while 
+optimizing generated 
+CSS:
+At C:\Users\KOUSHIL VAR
+MA\AppData\Roaming\npm\
+pnpm.ps1:24 char:5
++     & "node$exe"  "$b
+asedir/node_modules/pnp
+m/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpe    
+cified: (Found 1     
+warning... gene    
+rated CSS::Strin    g) 
+[], RemoteExc    eption
+    + FullyQualified   
+ ErrorId : Native    
+CommandError
+ 
+
+[2mÔöé   }[22m
+[2mÔöé }[22m
+[2mÔöé[22m @import ur
+l('https://fonts.google
+apis.com/css2?family=DM
++Sans:ital,opsz,wght@0,
+9..40,100..1000;1,9..40
+,100..1000&family=Sora:
+wght@100..800&family=Sp
+ace+Mono:ital,wght@0,40
+0;0,700;1,400;1,700&dis
+play=swap');
+[2mÔöå[22m        
+[33m[2m^--[22m 
+@import rules must 
+precede all rules 
+aside from @charset 
+and @layer 
+statements[39m
+[2mÔöå[22m
+[2mÔöé :root {[22m
+[2mÔöé   
+--surface-base: 
+#F4F6FB;[22m
+
+
+> Build error occurred
+Error: Turbopack build 
+failed with 3 errors:
+./app/dashboard/page.ts
+x:179:21
+Expected '</', got 
+'jsx text'
+  [90m177 |[0m       
+        </[33mResponsi
+veContainer[0m>
+  [90m178 |[0m       
+      </div>
+[31m[1m>[0m 
+[90m179 |[0m         
+  </section>
+  [90m    |[0m       
+              [31m[1m
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^[0m
+[31m[1m>[0m 
+[90m180 |[0m
+  [90m    |[0m 
+[31m[1m^[0m
+[31m[1m>[0m 
+[90m181 |[0m         
+  {[90m/* Quick 
+Actions */[0m}
+  [90m    |[0m 
+[31m[1m^^^^^^^^^^[0m
+  [90m182 |[0m       
+    <div 
+className=[32m"grid 
+grid-cols-2 gap-4 
+pb-4"[0m>
+  [90m183 |[0m       
+      <button className
+=[32m"bg-white/5 
+border border-white/10 
+p-4 rounded-xl flex 
+flex...[0m
+  [90m184 |[0m       
+        <div 
+className=[32m"p-3 
+bg-primary/10 
+rounded-full 
+text-primary 
+group-hover:sca...[0m
+
+Parsing ecmascript 
+source code failed
+
+
+./app/triggers/page.tsx
+:5:1
+Export GpsFixed 
+doesn't exist in 
+target module
+  [90m3 |[0m 
+...[32mreact'[0m;
+  [90m4 |[0m ...} 
+[36mfrom[0m [32m'fra
+mer-motion'[0m;
+[31m[1m>[0m [90m5 
+|[0m ... [36mas[0m 
+[33mMapIcon[0m, 
+[33mLayers[0m, 
+[33mGpsFixed[0m, 
+[33mCloudRain[0m, [3
+3mAlertTriangle[0m, 
+[33mWind[0m, 
+[33mInfo[0m, 
+[33mChevronUp[0m, 
+[33mChevronD...[0m
+  [90m  |[0m    [31m
+[1m^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^[0m
+  [90m6 |[0m 
+...[32mavigation'[0m;
+  [90m7 |[0m ...[32m
+nts/ui/button'[0m;
+  [90m8 |[0m 
+...[32ms/ui/card'[0m;
+
+The export GpsFixed 
+was not found in 
+module [project]/node_m
+odules/.pnpm/lucide-rea
+ct@0.564.0_react@19.2.4
+/node_modules/lucide-re
+act/dist/esm/lucide-rea
+ct.js [app-client] 
+(ecmascript).
+Did you mean to import 
+File?
+All exports of the 
+module are statically 
+known (It doesn't have 
+dynamic exports). So 
+it's known statically 
+that the requested 
+export doesn't exist.
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/triggers/page
+.tsx [Client Component 
+Browser]
+    ./app/triggers/page
+.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/triggers/page
+.tsx [Client Component 
+SSR]
+    ./app/triggers/page
+.tsx [Server Component]
+
+
+./app/triggers/page.tsx
+:5:1
+Export GpsFixed 
+doesn't exist in 
+target module
+  [90m3 |[0m 
+...[32mreact'[0m;
+  [90m4 |[0m ...} 
+[36mfrom[0m [32m'fra
+mer-motion'[0m;
+[31m[1m>[0m [90m5 
+|[0m ... [36mas[0m 
+[33mMapIcon[0m, 
+[33mLayers[0m, 
+[33mGpsFixed[0m, 
+[33mCloudRain[0m, [3
+3mAlertTriangle[0m, 
+[33mWind[0m, 
+[33mInfo[0m, 
+[33mChevronUp[0m, 
+[33mChevronD...[0m
+  [90m  |[0m    [31m
+[1m^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^[0m
+  [90m6 |[0m 
+...[32mavigation'[0m;
+  [90m7 |[0m ...[32m
+nts/ui/button'[0m;
+  [90m8 |[0m 
+...[32ms/ui/card'[0m;
+
+The export GpsFixed 
+was not found in 
+module [project]/node_m
+odules/.pnpm/lucide-rea
+ct@0.564.0_react@19.2.4
+/node_modules/lucide-re
+act/dist/esm/lucide-rea
+ct.js [app-ssr] 
+(ecmascript).
+Did you mean to import 
+File?
+All exports of the 
+module are statically 
+known (It doesn't have 
+dynamic exports). So 
+it's known statically 
+that the requested 
+export doesn't exist.
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/triggers/page
+.tsx [Client Component 
+Browser]
+    ./app/triggers/page
+.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/triggers/page
+.tsx [Client Component 
+SSR]
+    ./app/triggers/page
+.tsx [Server Component]
+
+
+    at <unknown> (./app
+/dashboard/page.tsx:179
+:21)
+    at <unknown> (./app
+/triggers/page.tsx:5:1)
+    at <unknown> (./app
+/triggers/page.tsx:5:1)
+ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.
+

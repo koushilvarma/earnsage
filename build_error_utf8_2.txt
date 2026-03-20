@@ -1,0 +1,74 @@
+﻿
+> my-project@0.1.0 build C:\Users\KOUSHIL VARMA\OneDrive\Desktop\guidewire\EarnSage
+> next build
+
+Ôû▓ Next.js 16.2.0 (Turbopack)
+
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 8.7s
+  Skipping validation of types
+
+  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+  The following mandatory changes were made to your tsconfig.json:
+
+  	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+
+  Finished TypeScript config validation in 90ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/15) ...
+  Generating static pages using 7 workers (3/15) 
+  Generating static pages using 7 workers (7/15) 
+node.exe : Error 
+occurred 
+prerendering page 
+"/payouts". Read 
+more: https://nextjs.
+org/docs/messages/pre
+render-error
+At C:\Users\KOUSHIL V
+ARMA\AppData\Roaming\
+npm\pnpm.ps1:24 
+char:5
++     & "node$exe"  "
+$basedir/node_modules
+/pnpm/bin/pnpm.cjs" 
+$args
++     ~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Error o   
+ ccurred ...prere    
+nder-error:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+ReferenceError: 
+ArrowRight is not 
+defined
+    at <unknown> 
+(C:\Users\KOUSHIL VAR
+MA\OneDrive\Desktop\g
+uidewire\EarnSage\.ne
+xt\server\chunks\ssr\
+_0l13595._.js:1:4481)
+ {
+  digest: 
+'4074949859'
+}
+Export encountered 
+an error on 
+/payouts/page: 
+/payouts, exiting 
+the build.
+Ô¿» Next.js build 
+worker exited with 
+code: 1 and signal: 
+null
+ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.
+
