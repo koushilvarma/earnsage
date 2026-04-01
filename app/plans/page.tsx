@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Shield, Zap, Sparkles, ChevronRight, Info, ArrowRight } from 'lucide-react';
+import { Check, Shield, Zap, Sparkles, ChevronRight, Info, ArrowRight, Sliders } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -132,6 +132,17 @@ export default function PlanSelection() {
             </div>
           </Card>
         ))}
+      </div>
+
+      <div className="mt-8">
+        <Button 
+          variant="secondary" 
+          className="w-full h-14 border-ink-primary border-2 text-ink-primary uppercase tracking-[0.2em] font-bold text-[10px] bg-white group hover:bg-ink-primary hover:text-white transition-all shadow-md"
+          onClick={() => router.push('/customize')}
+        >
+          <Sliders className="mr-2 group-hover:rotate-180 transition-transform" size={16} />
+          Customize my own shield
+        </Button>
       </div>
 
       <div className="mt-12 space-y-6 pt-8 border-t border-surface-sunken">

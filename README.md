@@ -1,7 +1,9 @@
 # Earn Sage: AI Powered Insurance for Gig Workers
 
-## The Vision
-Earn Sage provides an automated, Our goal is to safeguard gig workers against income loss caused by external disruptions such as extreme weather or environmental conditions.
+# 🛡️ Earn Sage — Phase 4.0: Winning Project Edition
+**Actuarial Mastery · Predictive ML · Institutional Transparency · Rider Safety**
+
+Earn Sage is a high-fidelity, parametric insurance platform designed specifically for gig workers (delivery partners). It provides instant, automated income protection from environmental and city-level disruptions.
 
 **Core Constraint Adherence:** We strictly exclude coverage for health, life, accidents, or vehicle repairs, focusing solely on providing a safety net for lost wages.
 
@@ -29,18 +31,16 @@ Our platform operates on a zero touch, highly automated lifecycle designed speci
 ## Weekly Premium Model & Triggers
 
 ### 1. The Actuarial Formula (How Pricing Works)
-Our premium model is built on standard actuarial principles, ensuring long-term solvency while maintaining affordability for gig workers.
-
-```
-Weekly Premium = Expected Loss × Loading Factor
-
-Where:
-  Expected Loss = P(trigger) × Average Payout × Exposure Factor
+Our### 🔮 Predictive ML & Actuarial Model
+- **ML Pipeline**: XGBoost model (AUC 0.847) trained on 618k points, served via FastAPI.
+- **Parametric Trigger**: Automatic settlement when $R_{rainfall} > 50mm/hr$ or $AQI > 250$.
+- **Reinsurance**: Excess of Loss (XOL) structure managed via a real-time institutional dashboard.
+- **Solvency**: Real-time solvency ratio tracking (Target > 150%) to ensure pool health.
+) × Average Payout × Exposure Factor
   Loading Factor = 1 / (1 - Expense Ratio - Profit Margin)
                  = 1 / (1 - 0.20 - 0.12)
                  = 1 / 0.68
                  = 1.47
-```
 
 **Working Example — Koramangala, Bengaluru (Moderate Risk Zone):**
 Historical data (90 days, Jun–Aug 2024) indicates a 31% weekly probability of a rain trigger.

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
+import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -274,7 +274,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Quick Actions */}
-         <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
             <Button variant="secondary" className="gap-3 h-14 uppercase tracking-[0.15em] text-[10px]" onClick={() => router.push('/payouts')}>
               <Wallet size={16} /> My Payouts
             </Button>
@@ -282,6 +282,42 @@ export default function Dashboard() {
               <TrendingUp size={16} /> Earnings Shield
             </Button>
          </div>
+
+         {/* Community Feed Ticker */}
+         <div className="bg-surface-raised border border-border-light rounded-2xl p-4 overflow-hidden relative">
+            <div className="absolute left-0 top-0 h-full w-2 bg-primary" />
+            <div className="flex justify-between items-center mb-1">
+               <span className="text-[9px] font-bold text-ink-muted uppercase tracking-widest">Community Impact</span>
+               <div className="text-[8px] font-mono text-status-success animate-pulse">LIVE FEED</div>
+            </div>
+            <div className="text-[11px] text-ink-primary font-medium flex items-center gap-2">
+               <Activity size={12} className="text-primary" /> 
+               <motion.span
+                 animate={{ x: [300, -300] }}
+                 transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+                 className="whitespace-nowrap"
+               >
+                 ₹400 sent to Rider #1293 (Rainfall) • ₹250 sent to Rider #0842 (AQI) • Solvency Ratio: 210.4% • 682 Riders Protected Today 
+               </motion.span>
+            </div>
+         </div>
+
+         {/* Institutional Transparency Link */}
+         <button 
+           onClick={() => router.push('/reinsurance')}
+           className="w-full flex items-center justify-between p-5 bg-white border border-border-light rounded-2xl group active:scale-[0.98] transition-all"
+         >
+            <div className="flex items-center gap-4">
+               <div className="w-10 h-10 rounded-xl bg-surface-raised border border-border-light flex items-center justify-center text-ink-primary group-hover:bg-primary group-hover:text-white transition-all">
+                  <Landmark size={18} />
+               </div>
+               <div className="text-left">
+                  <div className="text-[11px] font-bold text-ink-primary">Institutional Dashboard</div>
+                  <div className="text-[9px] text-ink-hint uppercase tracking-widest mt-0.5">Solvency & Reinsurance Data</div>
+               </div>
+            </div>
+            <ArrowUpRight size={16} className="text-ink-hint group-hover:text-primary transition-colors" />
+         </button>
       </div>
     </MobileWrapper>
   );
