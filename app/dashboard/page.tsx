@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck } from 'lucide-react';
+import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -18,6 +18,12 @@ const chartData = [
   { day: 'Fri', risk: 65 },
   { day: 'Sat', risk: 40 },
   { day: 'Sun', risk: 25 },
+];
+
+const activityLogs = [
+  { id: 1, type: 'payout', title: 'Payout Processed', desc: '+₹300.00 for Rainfall event', time: '2h ago', icon: Wallet, color: 'text-status-success' },
+  { id: 2, type: 'risk', title: 'Risk Alert', desc: 'High rainfall in Koramangala', time: '4h ago', icon: AlertTriangle, color: 'text-status-warning' },
+  { id: 3, type: 'policy', title: 'Policy Renewed', desc: 'Standard Shield active', time: '1d ago', icon: ShieldCheck, color: 'text-ink-primary' },
 ];
 
 export default function Dashboard() {
@@ -45,6 +51,45 @@ export default function Dashboard() {
       </header>
 
       <div className="space-y-6">
+        {/* Protection Score & Hero Grid */}
+        <div className="grid grid-cols-2 gap-4">
+           {/* Protection Score Gauge */}
+           <Card className="p-5 flex flex-col items-center justify-center text-center border-border-light relative overflow-hidden group">
+              <div className="text-[9px] font-bold text-ink-muted uppercase tracking-widest mb-4">Protection Score</div>
+              <div className="relative w-24 h-24 flex items-center justify-center">
+                <svg className="w-full h-full transform -rotate-90">
+                  <circle cx="50%" cy="50%" r="40%" className="stroke-surface-sunken fill-none" strokeWidth="6" />
+                  <motion.circle 
+                    cx="50%" cy="50%" r="40%" className="stroke-ink-primary fill-none" strokeWidth="6"
+                    strokeDasharray="251" initial={{ strokeDashoffset: 251 }} animate={{ strokeDashoffset: 251 - (251 * 0.85) }}
+                    transition={{ duration: 1.5, ease: "easeOut" }} strokeLinecap="round"
+                  />
+                </svg>
+                <div className="absolute flex flex-col items-center">
+                  <div className="text-mono-l text-xl">85</div>
+                  <div className="text-[8px] font-bold text-ink-hint uppercase">Safe</div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-[9px] font-bold text-status-success uppercase tracking-tighter">
+                 <ShieldCheck size={10} /> +5% this week
+              </div>
+           </Card>
+
+           {/* Quick Stats Card */}
+           <Card className="p-5 bg-ink-primary text-white border-none flex flex-col justify-between">
+              <div className="flex justify-between items-start">
+                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                   <Zap size={16} className="text-primary fill-primary/20" />
+                 </div>
+                 <Info size={14} className="text-white/30" />
+              </div>
+              <div>
+                <div className="text-[9px] font-bold text-white/50 uppercase tracking-widest mb-1">Total Protected</div>
+                <div className="text-mono-l text-2xl">₹12,400</div>
+              </div>
+           </Card>
+        </div>
+
         {/* Hero Coverage Card */}
         <Card variant="dark" className="p-6 relative overflow-hidden">
           <div className="flex justify-between items-start mb-6">
@@ -144,6 +189,32 @@ export default function Dashboard() {
           </Card>
         </section>
 
+        {/* Activity Feed */}
+        <section>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-ink-muted">Activity Feed</h3>
+            <button className="text-[10px] font-bold uppercase tracking-widest text-ink-hint flex items-center gap-1">
+              Clear <ChevronRight size={12} />
+            </button>
+          </div>
+          <div className="space-y-3">
+             {activityLogs.map((log) => (
+               <div key={log.id} className="flex gap-4 p-4 rounded-2xl bg-surface-raised border border-border-light/50">
+                  <div className={cn("w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm", log.color)}>
+                    <log.icon size={18} />
+                  </div>
+                  <div className="flex-1">
+                     <div className="flex justify-between items-start">
+                        <div className="text-xs font-bold text-ink-primary">{log.title}</div>
+                        <span className="text-[9px] font-mono text-ink-hint">{log.time}</span>
+                     </div>
+                     <p className="text-[10px] text-ink-muted mt-0.5">{log.desc}</p>
+                  </div>
+               </div>
+             ))}
+          </div>
+        </section>
+
         {/* Live Triggers */}
         <section>
           <div className="flex justify-between items-center mb-4">
@@ -184,15 +255,33 @@ export default function Dashboard() {
           </div>
         </section>
 
+        {/* Referral Card */}
+        <Card className="p-6 bg-gradient-to-br from-[#FF6B2B] to-[#E8571A] text-white border-none relative overflow-hidden group">
+           <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                 <Sparkles className="w-5 h-5 text-white/80" />
+                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Referral Reward</span>
+              </div>
+              <h3 className="text-heading text-lg mb-2">Invite a Fellow Rider</h3>
+              <p className="text-[11px] text-white/80 mb-6 leading-relaxed max-w-[200px]">
+                Get 1 week of <span className="font-bold text-white">Free Premium Armor</span> for every friend who joins.
+              </p>
+              <Button className="bg-white text-ink-primary hover:bg-white/90 h-10 text-[10px] uppercase tracking-widest px-6 border-none">
+                Invite Now
+              </Button>
+           </div>
+           <Shield className="absolute right-[-10px] top-[-10px] w-32 h-32 text-white/5 -rotate-12 transition-transform group-hover:scale-110" />
+        </Card>
+
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-4">
-           <Button variant="secondary" className="gap-3 h-14 uppercase tracking-[0.15em] text-[10px]">
-             <Wallet size={16} /> My Payouts
-           </Button>
-           <Button variant="secondary" className="gap-3 h-14 uppercase tracking-[0.15em] text-[10px]">
-             <MapIcon size={16} /> Risk Map
-           </Button>
-        </div>
+         <div className="grid grid-cols-2 gap-4">
+            <Button variant="secondary" className="gap-3 h-14 uppercase tracking-[0.15em] text-[10px]" onClick={() => router.push('/payouts')}>
+              <Wallet size={16} /> My Payouts
+            </Button>
+            <Button variant="primary" className="gap-3 h-14 uppercase tracking-[0.15em] text-[10px] bg-primary text-white border-none shadow-cta" onClick={() => router.push('/calculator')}>
+              <TrendingUp size={16} /> Earnings Shield
+            </Button>
+         </div>
       </div>
     </MobileWrapper>
   );

@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 
 import { MobileWrapper } from '@/components/shared/MobileWrapper'
 import { BottomNav } from '@/components/shared/BottomNav'
+import { PageTransition } from '@/components/shared/PageTransition'
 
 export default function RootLayout({
   children,
@@ -50,7 +51,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <MobileWrapper>
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
           {/* BottomNav is handled inside individual page layouts or via a client component check */}
         </MobileWrapper>
         <Analytics />

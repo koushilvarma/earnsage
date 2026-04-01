@@ -41,7 +41,20 @@ const triggers = [
     percent: 0, 
     status: 'CLEAR',
     color: '#059669',
-    icon: ShieldCheck
+    icon: ShieldCheck,
+    analysis: 'Atmospheric stability persists. No civic or social disruptions reported by local authorities in the last 24 hours.'
+  },
+  {
+    id: 'prediction',
+    name: 'Prediction',
+    zone: 'Southwest Bengaluru',
+    current: 'High Probability',
+    target: 'Next 6h',
+    percent: 82,
+    status: 'PREDICTIVE',
+    color: '#7C3AED',
+    icon: Zap,
+    analysis: 'ML models detect localized convective cells forming over Ramanagara, moving towards city center. Expected impact at 18:30 IST.'
   }
 ];
 
@@ -73,11 +86,21 @@ export default function TriggerMonitor() {
         
         {/* UI Overlays */}
         <div className="absolute top-4 right-4 flex flex-col gap-2">
-           <button className="w-10 h-10 rounded-xl bg-white/90 backdrop-blur border border-border-light flex items-center justify-center shadow-md">
-             <LocateFixed size={18} className="text-primary" />
+           <button className="w-10 h-10 rounded-xl bg-white/90 backdrop-blur border border-border-light flex items-center justify-center shadow-md group">
+             <LocateFixed size={18} className="text-primary group-hover:scale-110 transition-transform" />
            </button>
            <button className="w-10 h-10 rounded-xl bg-white/90 backdrop-blur border border-border-light flex items-center justify-center shadow-md">
              <Maximize2 size={18} className="text-ink-primary" />
+           </button>
+           <div className="h-4" />
+           <button 
+             className={cn(
+               "w-10 h-10 rounded-xl backdrop-blur border flex items-center justify-center shadow-md transition-all",
+               "bg-ink-primary text-white border-ink-primary"
+             )}
+             title="Toggle Predictive Heatmap"
+           >
+             <Zap size={18} className="fill-current" />
            </button>
         </div>
 
@@ -126,22 +149,37 @@ export default function TriggerMonitor() {
                  </div>
                </div>
 
-               <div className="space-y-3">
-                 <div className="flex justify-between items-end">
-                    <div className="text-mono-l text-lg">{t.current} <span className="text-[10px] text-ink-hint font-body uppercase">Live</span></div>
-                    <div className="text-[10px] text-ink-muted font-bold uppercase tracking-widest">Target: {t.target}</div>
-                 </div>
-                 <div className="h-1.5 w-full bg-surface-sunken rounded-full overflow-hidden">
-                   <motion.div 
-                    initial={{ width: 0 }} 
-                    animate={{ width: `${t.percent}%` }} 
-                    className={cn(
-                      "h-full rounded-full transition-all duration-1000",
-                      t.percent > 90 ? "bg-status-danger animate-pulse" : t.percent > 50 ? "bg-status-warning" : "bg-status-success"
-                    )} 
-                   />
-                 </div>
-               </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-end">
+                     <div className="text-mono-l text-lg">{t.current} <span className="text-[10px] text-ink-hint font-body uppercase">Live</span></div>
+                     <div className="text-[10px] text-ink-muted font-bold uppercase tracking-widest">Target: {t.target}</div>
+                  </div>
+                  <div className="h-1.5 w-full bg-surface-sunken rounded-full overflow-hidden">
+                    <motion.div 
+                     initial={{ width: 0 }} 
+                     animate={{ width: `${t.percent}%` }} 
+                     className={cn(
+                       "h-full rounded-full transition-all duration-1000",
+                       t.percent > 90 ? "bg-status-danger animate-pulse" : t.percent > 50 ? "bg-status-warning" : "bg-status-success"
+                     )} 
+                    />
+                  </div>
+                </div>
+
+                {selectedTrigger.id === t.id && t.analysis && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-6 p-4 rounded-2xl bg-surface-raised border-l-4 border-l-primary space-y-2"
+                  >
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-ink-primary flex items-center gap-2">
+                      <Zap size={12} className="text-primary fill-primary/20" /> Expert ML Analysis
+                    </div>
+                    <p className="text-[10px] text-ink-muted leading-relaxed">
+                      {t.analysis}
+                    </p>
+                  </motion.div>
+                )}
              </Card>
            ))}
         </div>

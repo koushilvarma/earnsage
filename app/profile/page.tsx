@@ -81,12 +81,16 @@ export default function PartnerProfile() {
               <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink-muted px-1">Account Settings</h3>
               <div className="bg-white border border-border-light rounded-[24px] overflow-hidden shadow-card">
                  {[
-                   { icon: Wallet, label: 'Payment Methods', sub: 'PhonePe, GPay' },
-                   { icon: Shield, label: 'Document Vault', sub: 'Zomato ID, DL' },
-                   { icon: CreditCard, label: 'Payout History', sub: '₹2,040 total' },
+                    { icon: CreditCard, label: 'Digital ID Card', sub: 'View verification QR', route: '/profile/id-card' },
+                    { icon: Wallet, label: 'Payment Methods', sub: 'PhonePe, GPay' },
+                    { icon: Shield, label: 'Document Vault', sub: 'Zomato ID, DL' },
+                    { icon: CreditCard, label: 'Payout History', sub: '₹2,040 total' },
                  ].map((item, i) => (
                    <div key={i} className="group cursor-pointer">
-                      <div className="flex items-center justify-between p-5 hover:bg-surface-raised transition-all">
+                      <div 
+                        className="flex items-center justify-between p-5 hover:bg-surface-raised transition-all"
+                        onClick={() => item.route && router.push(item.route)}
+                      >
                         <div className="flex items-center gap-4">
                            <div className="w-10 h-10 rounded-xl bg-surface-raised border border-border-light flex items-center justify-center text-ink-primary group-hover:bg-white transition-all">
                               <item.icon size={18} />
@@ -98,7 +102,7 @@ export default function PartnerProfile() {
                         </div>
                         <ChevronRight className="text-ink-hint group-hover:translate-x-1 transition-transform" size={16} />
                       </div>
-                      {i < 2 && <div className="mx-5 h-[1px] bg-surface-sunken opacity-50" />}
+                      {i < 3 && <div className="mx-5 h-[1px] bg-surface-sunken opacity-50" />}
                    </div>
                  ))}
               </div>

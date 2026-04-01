@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, MapPin, Navigation, Info, ArrowRight, Lock } from 'lucide-react';
+import { ChevronLeft, MapPin, Navigation, Info, ArrowRight, Lock, ShieldCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -109,6 +109,28 @@ export default function DeliveryProfile() {
               className="w-full h-1.5 bg-surface-sunken rounded-full appearance-none accent-ink-primary cursor-pointer"
             />
           </div>
+        </section>
+
+        {/* KYC Verification Mockup */}
+        <section className="space-y-4">
+           <div className="flex justify-between items-center">
+              <label className="text-heading">KYC Verification</label>
+              <div className="px-2.5 py-1 rounded-full bg-status-warning/10 text-status-warning border border-status-warning/20 text-[9px] font-bold uppercase tracking-widest">
+                Pending
+              </div>
+           </div>
+           <Card className="p-6 border-dashed border-2 border-border-light bg-surface-raised flex flex-col items-center justify-center text-center gap-4 group hover:border-ink-primary transition-all cursor-pointer">
+              <div className="w-14 h-14 rounded-full bg-white border border-border-light flex items-center justify-center text-ink-muted group-hover:scale-110 transition-transform">
+                 <ShieldCheck size={24} />
+              </div>
+              <div className="space-y-1">
+                 <div className="text-xs font-bold text-ink-primary italic">Verify Your Identity</div>
+                 <p className="text-[10px] text-ink-muted max-w-[200px]">Aadhaar or PAN required for automated payouts</p>
+              </div>
+              <Button variant="ghost" className="h-8 text-[9px] uppercase tracking-widest text-primary font-bold">
+                 Start Verification <ArrowRight size={12} className="ml-1" />
+              </Button>
+           </Card>
         </section>
 
         <section className="bg-surface-raised border border-border-light p-5 rounded-2xl space-y-3">
