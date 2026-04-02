@@ -2,12 +2,31 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, Settings, CreditCard, Shield, HelpCircle, LogOut, User, Share2, Award, Wallet, Info, ArrowUpRight, Copy, Languages, Bell } from 'lucide-react';
+import { 
+  ChevronRight, 
+  Settings, 
+  CreditCard, 
+  Shield, 
+  HelpCircle, 
+  LogOut, 
+  User, 
+  Share2, 
+  Award, 
+  Wallet, 
+  Info, 
+  ArrowUpRight, 
+  Copy, 
+  Languages, 
+  Bell,
+  Palette,
+  Edit
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { MobileWrapper } from '@/components/shared/MobileWrapper';
+import { useApp } from '@/components/shared/AppContext';
 
 const stats = [
   { label: 'Total Protected', value: '₹14,200', icon: Shield },
@@ -17,6 +36,11 @@ const stats = [
 
 export default function PartnerProfile() {
   const router = useRouter();
+  const { translations, setLanguage, language, theme, setTheme } = useApp();
+
+  const handleLogout = () => {
+    router.push('/login');
+  };
 
   return (
     <MobileWrapper withNav className="bg-surface-base px-6 pt-12 pb-24">
@@ -80,14 +104,25 @@ export default function PartnerProfile() {
           <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Preferences</h3>
           <div className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm">
             {[
-              { icon: Languages, label: 'App Language', sub: 'English (US)', action: 'lang' },
+              { icon: Languages, label: 'App Language', sub: language === 'en' ? 'English (US)' : language === 'kn' ? 'ಕನ್ನಡ' : 'हिन्दी', action: 'lang' },
+              { icon: Palette, label: 'App Theme', sub: theme === 'pure-white' ? 'Pure White' : theme === 'dark-pro' ? 'Dark Pro' : 'Vibrant Blue', action: 'theme' },
               { icon: Bell, label: 'Notifications', sub: 'Push, WhatsApp', action: 'notif' },
             ].map((item, i) => (
               <button 
                 key={i} 
+                onClick={() => {
+                  if (item.action === 'lang') {
+                    const next = language === 'en' ? 'kn' : language === 'kn' ? 'hi' : 'en';
+                    setLanguage(next);
+                  }
+                  if (item.action === 'theme') {
+                    const next = theme === 'pure-white' ? 'dark-pro' : theme === 'dark-pro' ? 'vibrant-blue' : 'pure-white';
+                    setTheme(next);
+                  }
+                }}
                 className={cn(
                   "w-full flex items-center justify-between p-5 hover:bg-slate-50 transition-colors",
-                  i !== 1 && "border-b border-slate-50"
+                  i !== 2 && "border-b border-slate-50"
                 )}
               >
                 <div className="flex items-center gap-4">
@@ -102,6 +137,18 @@ export default function PartnerProfile() {
                 <ChevronRight size={18} className="text-slate-300" />
               </button>
             ))}
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center justify-between p-5 text-status-danger hover:bg-red-50 transition-colors"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-2xl bg-red-50 flex items-center justify-center text-status-danger">
+                  <LogOut size={20} />
+                </div>
+                <div className="text-sm font-bold">{translations.logout}</div>
+              </div>
+              <ChevronRight size={18} />
+            </button>
           </div>
         </section>
 

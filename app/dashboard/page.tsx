@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { MobileWrapper } from '@/components/shared/MobileWrapper';
+import { useApp } from '@/components/shared/AppContext';
 import { cn } from '@/lib/utils';
 
 const chartData = [
@@ -28,7 +29,14 @@ const activityLogs = [
 
 export default function Dashboard() {
   const router = useRouter();
+  const { translations, setTheme, theme, setLanguage, language } = useApp();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [hasAlert, setHasAlert] = useState(true);
+
+  const handleLogout = () => {
+    // Perform any cleanup here
+    router.push('/login');
+  };
 
   return (
     <MobileWrapper withNav className="bg-surface-base px-6 pt-8 pb-24">
@@ -70,9 +78,12 @@ export default function Dashboard() {
                   <div className="text-[8px] font-bold text-ink-hint uppercase">Safe</div>
                 </div>
               </div>
-              <div className="mt-4 flex items-center gap-1 text-[9px] font-bold text-status-success uppercase tracking-tighter">
-                 <ShieldCheck size={10} /> +5% this week
-              </div>
+              <button 
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-3 text-[11px] font-bold text-status-danger hover:bg-slate-50 transition-colors uppercase tracking-widest"
+              >
+                 <ArrowRight size={14} /> {translations.logout}
+              </button>
            </Card>
 
            {/* Quick Stats Card */}
@@ -289,20 +300,20 @@ export default function Dashboard() {
 
         {/* Referral Card */}
         <Card className="p-6 bg-gradient-to-br from-[#FF6B2B] to-[#E8571A] text-white border-none relative overflow-hidden group">
-           <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-4">
-                 <Sparkles className="w-5 h-5 text-white/80" />
-                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Referral Reward</span>
-              </div>
-              <h3 className="text-heading text-lg mb-2">Invite a Fellow Rider</h3>
-              <p className="text-[11px] text-white/80 mb-6 leading-relaxed max-w-[200px]">
-                Get 1 week of <span className="font-bold text-white">Free Premium Armor</span> for every friend who joins.
-              </p>
-              <Button className="bg-white text-ink-primary hover:bg-white/90 h-10 text-[10px] uppercase tracking-widest px-6 border-none">
-                Invite Now
-              </Button>
-           </div>
-           <Shield className="absolute right-[-10px] top-[-10px] w-32 h-32 text-white/5 -rotate-12 transition-transform group-hover:scale-110" />
+            <div className="relative z-10">
+               <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-white/80" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Referral Reward</span>
+               </div>
+               <h3 className="text-heading text-lg mb-2">Invite a Fellow Rider</h3>
+               <p className="text-[11px] text-white/80 mb-6 leading-relaxed max-w-[200px]">
+                 Get 1 week of <span className="font-bold text-white">Free Premium Armor</span> for every friend who joins.
+               </p>
+               <Button className="bg-white text-ink-primary hover:bg-white/90 h-10 text-[10px] uppercase tracking-widest px-6 border-none">
+                 Invite Now
+               </Button>
+            </div>
+            <Shield className="absolute right-[-10px] top-[-10px] w-32 h-32 text-white/5 -rotate-12 transition-transform group-hover:scale-110" />
         </Card>
 
         {/* Quick Actions */}

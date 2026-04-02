@@ -39,7 +39,27 @@
   --radius-2xl: 24px;
 }
 
-@layer base {
+/* Theme Variants */
+.theme-dark-pro {
+  --bg-surface-base: #0F172A;
+  --bg-surface-raised: #1E293B;
+  --ink-primary: #FFFFFF;
+  --ink-muted: #94A3B8;
+  --ink-hint: #64748B;
+  --border-light: rgba(255, 255, 255, 0.05);
+}
+
+.theme-vibrant-blue {
+  --bg-surface-base: #F0F9FF;
+  --bg-surface-raised: #FFFFFF;
+  --primary: #0EA5E9;
+  --ink-primary: #0C4A6E;
+  --ink-muted: #0369A1;
+  --ink-hint: #7DD3FC;
+  --border-light: #E0F2FE;
+}
+
+@layer components {
   :root {
     --bg-base: #F8FAFC;
     --bg-card: #FFFFFF;
