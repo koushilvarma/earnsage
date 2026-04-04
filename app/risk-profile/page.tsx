@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { MobileWrapper } from '@/components/shared/MobileWrapper';
+import { Logo } from '@/components/shared/Logo';
 
 const scanningSteps = [
   { text: "Ingesting Guidewire Cloud Stream...", node: "US-EAST-1" },
@@ -179,12 +180,11 @@ export default function RiskAnalysis() {
   return (
     <MobileWrapper className="bg-surface-base flex flex-col min-h-screen text-ink-primary px-6 pt-8 pb-32">
       <header className="flex justify-between items-center mb-10">
-        <div>
-          <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2">Validated Oracle</div>
-          <h1 className="text-display-l text-4xl leading-none text-ink-primary font-black">Risk Profile</h1>
-        </div>
-        <div className="w-12 h-12 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
-           <MapPin size={22} className="text-primary" />
+        <Logo withText size={44} />
+        <div className="flex gap-2">
+           <button className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm hover:scale-110 transition-transform">
+              <MapPin size={22} className="text-primary" />
+           </button>
         </div>
       </header>
 

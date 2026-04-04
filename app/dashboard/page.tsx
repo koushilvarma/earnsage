@@ -11,6 +11,7 @@ import { MobileWrapper } from '@/components/shared/MobileWrapper';
 import { useApp } from '@/components/shared/AppContext';
 import { cn } from '@/lib/utils';
 
+import { Logo } from '@/components/shared/Logo';
 import { LiveMap } from '@/components/shared/LiveMap';
 
 const chartData = [
@@ -48,13 +49,7 @@ export default function Dashboard() {
       <header className="px-6 pt-4 mb-8">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-ink-primary text-white flex items-center justify-center text-lg font-black shadow-lg">
-              RK
-            </div>
-            <div>
-              <h1 className="text-[10px] font-black uppercase tracking-[0.3em] text-ink-hint">Command Center</h1>
-              <div className="text-xl font-black text-ink-primary">Hey, Ravi</div>
-            </div>
+            <Logo withText size={48} />
           </div>
           <div className="flex gap-2">
              <button onClick={() => router.push('/support')} className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">

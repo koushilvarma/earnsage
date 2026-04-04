@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { MobileWrapper } from '@/components/shared/MobileWrapper';
-
+import { Logo } from '@/components/shared/Logo';
 import { LiveMap } from '@/components/shared/LiveMap';
 
 const platforms = ["Zomato", "Zepto", "Swiggy", "Blinkit", "Dunzo", "Porter", "Other"];
@@ -30,12 +30,12 @@ export default function DeliveryProfile() {
     <MobileWrapper className="bg-surface-base flex flex-col min-h-screen">
       <header className="px-6 pt-8 pb-4">
         <div className="flex justify-between items-center mb-6">
-          <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-surface-raised border border-border-light flex items-center justify-center text-ink-primary">
+          <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-surface-raised border border-border-light flex items-center justify-center text-ink-primary shadow-sm hover:scale-110 transition-transform">
             <ChevronLeft size={20} />
           </button>
-          <div className="text-right">
-            <div className="text-display-l text-ink-primary">Delivery Profile</div>
-            <div className="text-caption font-bold text-primary">2 of 3</div>
+          <div className="text-right flex flex-col items-end">
+            <Logo withText size={40} />
+            <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-1">Profile Setup (2/3)</div>
           </div>
         </div>
         <div className="h-1 w-full bg-surface-sunken rounded-full overflow-hidden">
