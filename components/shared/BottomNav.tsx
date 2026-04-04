@@ -8,11 +8,10 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { icon: Home, label: 'Home', path: '/dashboard' },
-  { icon: MapIcon, label: 'Triggers', path: '/triggers' },
-  { icon: Wallet, label: 'Payouts', path: '/payouts' },
-  { icon: Shield, label: 'Plan', path: '/plans/manage' },
-  { icon: HelpCircle, label: 'Support', path: '/support' },
-  { icon: User, label: 'Profile', path: '/profile' },
+  { icon: MapIcon, label: 'Tactical', path: '/triggers' },
+  { icon: Shield, label: 'Shield', path: '/plans/manage' },
+  { icon: HelpCircle, label: 'Nexus', path: '/support' },
+  { icon: User, label: 'Oracle', path: '/profile' },
 ];
 
 export const BottomNav = () => {
