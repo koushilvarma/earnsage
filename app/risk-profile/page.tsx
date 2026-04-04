@@ -175,33 +175,33 @@ export default function RiskAnalysis() {
 
   return (
     <MobileWrapper className="bg-[#0A0F1E] flex flex-col min-h-screen text-white px-6 pt-8 pb-32">
-      <header className="flex justify-between items-center mb-8">
+      <header className="flex justify-between items-center mb-10">
         <div>
-          <div className="text-[9px] font-bold text-primary uppercase tracking-[0.3em] mb-2">Validated Oracle</div>
-          <h1 className="text-display-l text-4xl leading-none">Risk Profile</h1>
+          <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2">Validated Oracle</div>
+          <h1 className="text-display-l text-4xl leading-none text-ink-primary font-black">Risk Profile</h1>
         </div>
-        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-           <MapPin size={22} className="text-white/40" />
+        <div className="w-12 h-12 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
+           <MapPin size={22} className="text-primary" />
         </div>
       </header>
 
-      <main className="space-y-8">
+      <main className="space-y-10">
         {/* Saturn Gauge Card */}
-        <Card className="p-8 bg-white/5 border-white/10 rounded-[40px] text-center relative overflow-hidden group">
+        <Card className="p-10 bg-white border-border-light rounded-[48px] text-center relative overflow-hidden group shadow-xl">
            <div className="relative z-10">
-              <div className="text-[10px] font-bold tracking-[0.3em] text-white/30 uppercase mb-8">Disruption Probability</div>
+              <div className="text-[10px] font-black tracking-[0.4em] text-ink-hint uppercase mb-10">Disruption Probability</div>
               
-              <div className="relative w-56 h-56 mx-auto flex items-center justify-center">
+              <div className="relative w-64 h-64 mx-auto flex items-center justify-center">
                 <svg className="w-full h-full transform -rotate-90">
                   {/* Outer Saturn Ring */}
-                  <circle cx="50%" cy="50%" r="48%" className="stroke-white/5 fill-none" strokeWidth="1" strokeDasharray="4 4" />
+                  <circle cx="50%" cy="50%" r="48%" className="stroke-slate-200 fill-none" strokeWidth="1" strokeDasharray="4 4" />
                   
                   {/* Progress Gauge */}
-                  <circle cx="50%" cy="50%" r="42%" className="stroke-white/5 fill-none" strokeWidth="12" />
+                  <circle cx="50%" cy="50%" r="42%" className="stroke-slate-100 fill-none" strokeWidth="14" />
                   <motion.circle
                     cx="50%" cy="50%" r="42%"
                     className="stroke-[#FF6B2B] fill-none"
-                    strokeWidth="12"
+                    strokeWidth="14"
                     strokeDasharray="264"
                     initial={{ strokeDashoffset: 264 }}
                     animate={{ strokeDashoffset: 264 - (264 * 0.64) }}
@@ -210,50 +210,50 @@ export default function RiskAnalysis() {
                   />
                   
                   {/* Inner Orbit Circle */}
-                  <circle cx="50%" cy="50%" r="30%" className="stroke-primary/20 fill-none" strokeWidth="1" />
+                  <circle cx="50%" cy="50%" r="30%" className="stroke-primary/10 fill-none" strokeWidth="1" />
                 </svg>
                 
                 <div className="absolute flex flex-col items-center">
-                  <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Score</div>
+                  <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Score</div>
                   <motion.div 
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="text-mono-xl text-[64px] font-black leading-none"
+                    className="text-mono-xl text-[72px] font-black leading-none text-ink-primary"
                   >
                     64
                   </motion.div>
-                  <div className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mt-2 bg-primary/10 px-2 py-0.5 rounded">High Confidence</div>
+                  <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mt-3 bg-primary/10 px-3 py-1 rounded-full">High Confidence</div>
                 </div>
               </div>
            </div>
 
            {/* Aura Effect */}
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/20 blur-[80px] rounded-full -z-0 opacity-40 group-hover:opacity-60 transition-opacity" />
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -z-0 opacity-40 group-hover:opacity-60 transition-opacity" />
         </Card>
 
         {/* Live Data Ingest Section */}
         <section className="space-y-4">
            <div className="flex justify-between items-center px-1">
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 flex items-center gap-2">
+              <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-ink-hint flex items-center gap-2">
                  <Terminal size={14} className="text-primary" /> Live Ingest Feed
               </h3>
-              <div className="text-[9px] font-mono text-emerald-400 flex items-center gap-1">
-                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE STREAM
+              <div className="text-[9px] font-mono text-emerald-500 font-bold flex items-center gap-1.5">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE STREAMING
               </div>
            </div>
-           <div className="bg-white/[0.03] border border-white/5 rounded-3xl p-6 font-mono space-y-4">
-              <div className="grid grid-cols-2 gap-y-4">
+           <div className="bg-white border border-border-light rounded-[32px] p-8 font-mono space-y-6 shadow-sm">
+              <div className="grid grid-cols-2 gap-y-6">
                  {[
                    { label: "Humidity", val: "84%", icon: Activity },
                    { label: "IoT Mesh", val: "99.2%", icon: Radio },
                    { label: "Wind Gust", val: "12km/h", icon: Wind },
                    { label: "Pollen", val: "Low", icon: ShieldCheck }
                  ].map((stat, i) => (
-                   <div key={i} className="flex flex-col gap-1">
-                      <div className="text-[8px] text-white/30 uppercase tracking-widest flex items-center gap-1.5">
-                         <stat.icon size={10} className="text-primary" /> {stat.label}
+                   <div key={i} className="flex flex-col gap-2">
+                      <div className="text-[9px] text-ink-hint uppercase font-bold tracking-widest flex items-center gap-2">
+                         <stat.icon size={12} className="text-primary" /> {stat.label}
                       </div>
-                      <div className="text-xs text-white/80 font-bold">{stat.val}</div>
+                      <div className="text-sm text-ink-primary font-black">{stat.val}</div>
                    </div>
                  ))}
               </div>
@@ -261,10 +261,10 @@ export default function RiskAnalysis() {
         </section>
 
         {/* Risk Radar Chart */}
-        <Card className="p-8 bg-white/5 border-white/10 rounded-[40px] space-y-6">
+        <Card className="p-10 bg-white border-border-light rounded-[48px] space-y-8 shadow-sm">
            <div className="text-center">
-              <h3 className="text-[11px] font-bold uppercase tracking-widest text-primary mb-1">Exposure Decomposition</h3>
-              <p className="text-[10px] text-white/40">Multi-dimensional risk factor analysis</p>
+              <h3 className="text-[11px] font-black uppercase tracking-widest text-primary mb-2">Exposure Decomposition</h3>
+              <p className="text-[10px] text-ink-hint font-bold uppercase tracking-widest">Multi-dimensional risk factor analysis</p>
            </div>
            <RadarChart data={{
              "Rain": 85,
@@ -273,16 +273,16 @@ export default function RiskAnalysis() {
              "Traffic": 50,
              "Civic": 30
            }} />
-           <div className="pt-4 border-t border-white/5 text-[10px] text-white/60 leading-relaxed text-center font-medium">
-             Highest vulnerability identified in **Precipitation Intensity**. <br />
-             Historical delta: **+22.4%** vs. Koramangala Mean.
+           <div className="pt-6 border-t border-border-light text-[10px] text-ink-muted leading-relaxed text-center font-bold uppercase tracking-widest">
+             Highest vulnerability identified in <br />
+             <span className="text-primary font-black">Precipitation Intensity</span>
            </div>
         </Card>
 
         {/* Risk History Sparkline */}
         <section className="space-y-4">
-           <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 px-1">Risk Entropy (30D)</h3>
-           <Card className="p-6 bg-slate-900/50 border-white/5 h-24 flex items-end gap-1 px-4">
+           <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-ink-hint px-1">Risk Entropy (30D)</h3>
+           <Card className="p-8 bg-surface-sunken border-border-light h-28 flex items-end gap-1.5 px-6 rounded-[32px]">
               {[40, 45, 30, 25, 50, 70, 85, 60, 40, 55, 64].map((h, i) => (
                 <motion.div 
                   key={i}
@@ -291,7 +291,7 @@ export default function RiskAnalysis() {
                   transition={{ delay: i * 0.05 }}
                   className={cn(
                     "flex-1 rounded-t-sm",
-                    i === 10 ? "bg-primary shadow-[0_0_10px_#FF6B2B]" : "bg-white/10"
+                    i === 10 ? "bg-primary shadow-[0_0_10px_rgba(255,107,43,0.3)]" : "bg-slate-300"
                   )}
                 />
               ))}
@@ -299,16 +299,16 @@ export default function RiskAnalysis() {
         </section>
 
         {/* CTA Section */}
-        <Card className="p-8 bg-primary text-white border-none rounded-[40px] shadow-[0_20px_50px_rgba(255,107,43,0.3)] relative overflow-hidden group">
-           <div className="relative z-10 space-y-6 text-center">
+        <Card className="p-10 bg-slate-900 text-white border-none rounded-[48px] shadow-2xl relative overflow-hidden group">
+           <div className="relative z-10 space-y-8 text-center">
               <div>
-                 <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white/60 mb-2">Recommendation</div>
-                 <h3 className="text-display-m text-3xl">Standard Shield</h3>
-                 <p className="text-xs text-white/80 mt-2">Optimal 85% coverage for your dynamic profile.</p>
+                 <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-3">Recommendation</div>
+                 <h3 className="text-display-m text-3xl font-black">Standard Shield</h3>
+                 <p className="text-[11px] text-white/60 mt-3 font-medium uppercase tracking-widest">Optimal 85% coverage for your dynamic profile.</p>
               </div>
               <Button 
                 onClick={() => router.push('/dashboard')}
-                className="w-full h-14 bg-white text-ink-primary uppercase font-black tracking-[0.2em] text-[11px] rounded-2xl hover:bg-slate-100 transition-all shadow-xl"
+                className="w-full h-16 bg-white text-ink-primary uppercase font-black tracking-[0.2em] text-[11px] rounded-[20px] hover:bg-slate-100 transition-all shadow-xl"
               >
                 Engage Protection <Zap size={16} className="ml-2 fill-primary" />
               </Button>
@@ -317,17 +317,17 @@ export default function RiskAnalysis() {
         </Card>
 
         <div className="text-center py-8">
-           <div className="text-[9px] font-bold text-white/20 uppercase tracking-[0.4em]">Model Node: EARN-V7-OMEGA</div>
-           <Button variant="ghost" onClick={() => router.push('/onboarding/profile')} className="text-white/40 mt-4 text-[10px] uppercase tracking-widest font-bold">
+           <div className="text-[9px] font-black text-ink-hint uppercase tracking-[0.4em]">Model Node: EARN-V7-OMEGA</div>
+           <Button variant="ghost" onClick={() => router.push('/onboarding/profile')} className="text-ink-hint mt-4 text-[10px] uppercase tracking-widest font-black">
               Revise Zone Selection <ChevronRight size={14} className="ml-1" />
            </Button>
         </div>
       </main>
 
       {/* Floating Verification Badge */}
-      <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full flex items-center gap-3">
+      <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 bg-white/80 backdrop-blur-md border border-border-light px-5 py-2.5 rounded-full flex items-center gap-3 shadow-lg">
          <Radio size={14} className="text-primary animate-pulse" />
-         <span className="text-[9px] font-bold uppercase tracking-widest text-white/60">Guidewire Cloud Verified Result</span>
+         <span className="text-[9px] font-black uppercase tracking-widest text-ink-primary">Guidewire Cloud Verified</span>
       </div>
     </MobileWrapper>
   );

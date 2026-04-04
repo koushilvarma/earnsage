@@ -46,10 +46,10 @@ export const LiveMap = () => {
         <motion.div
           key={rider.id}
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0.2, 0.4, 0.2] }}
+          animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.2, 1] }}
           transition={{ duration: 3, repeat: Infinity, delay: Math.random() * 2 }}
           style={{ left: `${rider.x}%`, top: `${rider.y}%` }}
-          className="absolute w-1.5 h-1.5 bg-emerald-500 rounded-full blur-[1px] z-10"
+          className="absolute w-2 h-2 bg-emerald-400 rounded-full blur-[2px] z-10 shadow-[0_0_8px_#34D399]"
         />
       ))}
 

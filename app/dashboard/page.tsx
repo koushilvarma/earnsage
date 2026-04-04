@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight, UserCheck, Sliders, Smartphone, MoreHorizontal } from 'lucide-react';
+import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight, UserCheck, Sliders, Smartphone, MoreHorizontal, Radio } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,6 +10,8 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { MobileWrapper } from '@/components/shared/MobileWrapper';
 import { useApp } from '@/components/shared/AppContext';
 import { cn } from '@/lib/utils';
+
+import { LiveMap } from '@/components/shared/LiveMap';
 
 const chartData = [
   { day: 'Mon', risk: 20 },
@@ -93,8 +95,13 @@ export default function Dashboard() {
                     <span className="text-[9px] font-bold text-emerald-400 font-mono">Live</span>
                  </div>
                  <div className="text-xs font-black text-white">Aggregating 1,248 Node Packets</div>
-                 <div className="mt-2 h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                    <motion.div animate={{ x: [-100, 200] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className="h-full w-24 bg-gradient-to-r from-transparent via-primary to-transparent" />
+                 <div className="flex items-center gap-2 mt-2">
+                    <div className="px-1.5 py-0.5 bg-emerald-500/20 rounded border border-emerald-500/30 text-emerald-400 text-[8px] font-mono font-black uppercase tracking-wider">
+                       524 Nodes Active
+                    </div>
+                    <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                       <motion.div animate={{ x: [-100, 200] }} transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }} className="h-full w-12 bg-gradient-to-r from-transparent via-primary to-transparent" />
+                    </div>
                  </div>
               </div>
            </div>
@@ -117,23 +124,56 @@ export default function Dashboard() {
                onClick={() => router.push(action.path)}
                className="flex-shrink-0 flex flex-col items-center gap-3"
              >
-                <div className={cn("w-16 h-16 rounded-[24px] flex items-center justify-center shadow-sm border border-transparent hover:border-primary/20 hover:scale-105 transition-all", action.color)}>
+                <div className={cn("w-16 h-16 rounded-[24px] flex items-center justify-center shadow-sm border border-transparent hover:border-primary/20 hover:scale-105 transition-all text-sm", action.color)}>
                    <action.icon size={26} />
                 </div>
                 <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider">{action.label}</span>
              </button>
            ))}
-           <button className="flex-shrink-0 flex flex-col items-center gap-3">
-              <div className="w-16 h-16 rounded-[24px] bg-surface-raised flex items-center justify-center text-ink-hint">
-                 <MoreHorizontal size={26} />
-              </div>
-              <span className="text-[10px] font-bold text-ink-hint uppercase tracking-wider">More</span>
-           </button>
         </div>
       </section>
 
       {/* Main Stats Hub */}
-      <main className="px-6 space-y-6">
+      <main className="px-6 space-y-8">
+        {/* Tactical Mesh Monitoring (THE MAP) */}
+        <section className="space-y-4">
+           <div className="flex justify-between items-center px-1">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-ink-hint">Neural Mesh Monitoring</h3>
+              <div className="flex items-center gap-1.5 text-[9px] font-bold text-primary uppercase tracking-widest">
+                 <Radio size={12} className="animate-pulse" /> Live IoT Feed
+              </div>
+           </div>
+           <Card className="h-[300px] w-full rounded-[48px] overflow-hidden border-border-light shadow-2xl relative group">
+              <LiveMap />
+              <div className="absolute top-4 left-4 z-40 bg-ink-primary text-white text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full shadow-lg border border-white/10 animate-pulse">
+                524 Localized Rider Nodes
+              </div>
+           </Card>
+        </section>
+
+        {/* Feature Grid: Forecast vs Reinsurance */}
+        <div className="grid grid-cols-2 gap-4">
+           <button 
+             onClick={() => router.push('/forecast')}
+             className="text-left bg-white border border-border-light p-6 rounded-[32px] shadow-sm hover:shadow-md transition-all group"
+           >
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                 <Activity size={20} />
+              </div>
+              <h3 className="text-sm font-black text-ink-primary mb-1">Forecast</h3>
+              <p className="text-[10px] text-ink-hint leading-tight">Simulate triggers and payouts.</p>
+           </button>
+           <button 
+             onClick={() => router.push('/reinsurance')}
+             className="text-left bg-white border border-border-light p-6 rounded-[32px] shadow-sm hover:shadow-md transition-all group"
+           >
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
+                 <Landmark size={20} />
+              </div>
+              <h3 className="text-sm font-black text-ink-primary mb-1">Reinsurance</h3>
+              <p className="text-[10px] text-ink-hint leading-tight">Institutional solvency dashboard.</p>
+           </button>
+        </div>
         {/* Hero Card: Coverage Status */}
         <Card variant="dark" className="p-8 bg-slate-900 border-none rounded-[40px] relative overflow-hidden group shadow-2xl">
            <div className="relative z-10 flex flex-col h-full">
