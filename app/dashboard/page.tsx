@@ -42,25 +42,65 @@ export default function Dashboard() {
 
   return (
     <MobileWrapper withNav className="bg-surface-base px-0 pt-8 pb-32">
-      {/* Header */}
-      <header className="px-6 flex justify-between items-center mb-8">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-ink-primary text-white flex items-center justify-center text-lg font-black shadow-lg">
-            RK
+      {/* Header & Neural Hub */}
+      <header className="px-6 pt-4 mb-8">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-ink-primary text-white flex items-center justify-center text-lg font-black shadow-lg">
+              RK
+            </div>
+            <div>
+              <h1 className="text-[10px] font-black uppercase tracking-[0.3em] text-ink-hint">Command Center</h1>
+              <div className="text-xl font-black text-ink-primary">Hey, Ravi</div>
+            </div>
           </div>
-          <div>
-            <h1 className="text-[10px] font-black uppercase tracking-[0.3em] text-ink-hint">Command Center</h1>
-            <div className="text-xl font-black text-ink-primary">Hey, Ravi</div>
+          <div className="flex gap-2">
+             <button onClick={() => router.push('/support')} className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
+               <HelpCircle size={20} className="text-ink-primary" />
+             </button>
+             <button className="relative w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
+                <Bell size={20} className="text-ink-primary" />
+                <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white" />
+             </button>
           </div>
         </div>
-        <div className="flex gap-2">
-           <button onClick={() => router.push('/support')} className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
-             <HelpCircle size={20} className="text-ink-primary" />
-           </button>
-           <button className="relative w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
-              <Bell size={20} className="text-ink-primary" />
-              <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white" />
-           </button>
+
+        {/* Neural Hub Visualization */}
+        <div className="p-6 bg-slate-900 rounded-[32px] overflow-hidden relative group">
+           <div className="relative z-10 flex items-center gap-6">
+              <div className="relative w-16 h-16 shrink-0">
+                 <svg viewBox="0 0 100 100" className="w-full h-full text-primary">
+                    <motion.path 
+                      d="M50 20 C30 20 20 40 20 55 C20 75 40 85 50 85 C60 85 80 75 80 55 C80 40 70 20 50 20 Z" 
+                      fill="none" stroke="currentColor" strokeWidth="2"
+                      animate={{ strokeWidth: [2, 4, 2], opacity: [0.3, 0.6, 0.3] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.circle cx="50" cy="50" r="10" fill="currentColor" animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }} />
+                    <circle cx="35" cy="45" r="3" fill="currentColor" opacity="0.4" />
+                    <circle cx="65" cy="45" r="3" fill="currentColor" opacity="0.4" />
+                    <circle cx="50" cy="70" r="3" fill="currentColor" opacity="0.4" />
+                    {/* Connections */}
+                    <line x1="50" y1="50" x2="35" y2="45" stroke="currentColor" strokeWidth="0.5" opacity="0.2" />
+                    <line x1="50" y1="50" x2="65" y2="45" stroke="currentColor" strokeWidth="0.5" opacity="0.2" />
+                    <line x1="50" y1="50" x2="50" y2="70" stroke="currentColor" strokeWidth="0.5" opacity="0.2" />
+                 </svg>
+                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
+              </div>
+              <div className="flex-1">
+                 <div className="flex justify-between items-center mb-1">
+                    <span className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em]">Neural Ingest Sink</span>
+                    <span className="text-[9px] font-bold text-emerald-400 font-mono">Live</span>
+                 </div>
+                 <div className="text-xs font-black text-white">Aggregating 1,248 Node Packets</div>
+                 <div className="mt-2 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                    <motion.div animate={{ x: [-100, 200] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className="h-full w-24 bg-gradient-to-r from-transparent via-primary to-transparent" />
+                 </div>
+              </div>
+           </div>
+           {/* Decorative background labels */}
+           <div className="absolute top-2 right-4 text-[7px] font-mono text-white/10 uppercase">PREDICTING: Flood_Prob_0.14</div>
+           <div className="absolute bottom-2 right-4 text-[7px] font-mono text-white/10 uppercase">CLASSIFYING: Rain_Cell_41</div>
         </div>
       </header>
 

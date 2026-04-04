@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, Shield, Zap, Target, ArrowRight, Info, CheckCircle2, Sparkles, HelpCircle } from 'lucide-react';
+import { ChevronLeft, Shield, Zap, Target, ArrowRight, Info, CheckCircle2, Sparkles, HelpCircle, Brain } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -148,20 +148,43 @@ export default function PolicyCustomizer() {
            </div>
         </section>
 
-        {/* Integration Note */}
-        <section className="bg-surface-raised border border-border-light p-6 rounded-[32px] space-y-4 relative">
-           <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                 <Sparkles size={20} />
+        {/* AI Smart Optimizer */}
+        <section className="bg-slate-900 border-none p-8 rounded-[40px] space-y-6 relative overflow-hidden group shadow-2xl">
+           <div className="relative z-10 flex justify-between items-start">
+              <div className="flex items-center gap-4">
+                 <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-lg">
+                    <Brain size={24} />
+                 </div>
+                 <div>
+                    <h4 className="text-white text-sm font-black uppercase tracking-widest">Neural Auto-Tune</h4>
+                    <p className="text-[9px] text-white/40 font-bold uppercase tracking-widest">Powered by Oracle v2.1</p>
+                 </div>
               </div>
-              <h4 className="text-subheading text-xs">AI Smart Suggest</h4>
+              <div className="flex items-center h-6">
+                 <button 
+                   onClick={() => {
+                     setCoverage(2500);
+                     setSensitivity(70);
+                   }}
+                   className="relative inline-flex h-6 w-11 items-center rounded-full bg-white/10 border border-white/20 transition-all hover:bg-white/20"
+                 >
+                    <span className="sr-only">Enable AI Optimizer</span>
+                    <span className="inline-block h-4 w-4 transform rounded-full bg-primary transition-all translate-x-1" />
+                 </button>
+              </div>
            </div>
-           <p className="text-[10px] text-ink-muted leading-relaxed">
-             Based on your ride history in Koramangala, we recommend a **₹2,500 Coverage Cap** at **70% Sensitivity** for optimal protection during the monsoon season.
-           </p>
-           <Button variant="ghost" className="p-0 text-primary h-auto text-[9px] uppercase tracking-widest font-bold">
-              Apply Smart Plan <ArrowRight size={12} className="ml-1" />
-           </Button>
+           
+           <div className="relative z-10 space-y-3">
+              <p className="text-[11px] text-white/70 leading-relaxed">
+                 The Neural engine identifies a <span className="text-white font-bold underline decoration-primary underline-offset-4">88% correlation</span> between your Sector [KRM_04] and the upcoming Monsoon Front. 
+              </p>
+              <div className="p-3 bg-white/5 rounded-2xl border border-white/10 text-[9px] text-primary font-black uppercase tracking-widest text-center animate-pulse">
+                 Recommend: ₹2500 Coverage @ 70% Sensitivity
+              </div>
+           </div>
+
+           {/* Abstract Neural background */}
+           <Sparkles className="absolute right-[-10px] top-[-10px] w-24 h-24 text-white/5 rotate-12" />
         </section>
       </main>
 

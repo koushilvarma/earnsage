@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, CloudRain, Wind, Zap, Info, Calendar, ArrowRight, TrendingUp, Gauge, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, CloudRain, Wind, Zap, Info, Calendar, ArrowRight, TrendingUp, Gauge, AlertCircle, CheckCircle2, Shield } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -40,31 +40,50 @@ export default function PayoutForecast() {
 
       <main className="space-y-8">
         {/* ML Prediction Banner */}
-        <Card className="p-6 bg-slate-900 text-white border-none relative overflow-hidden shadow-2xl">
-           <div className="relative z-10 space-y-4">
-              <div className="flex items-center justify-between">
-                 <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-md bg-primary/20 flex items-center justify-center">
-                       <Zap size={14} className="text-primary fill-primary/30" />
-                    </div>
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/50">Model Prediction v4.2</span>
-                 </div>
-                 <div className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-[8px] font-bold uppercase tracking-widest">
-                    High Confidence
-                 </div>
-              </div>
-              <h2 className="text-heading text-xl">Monsoon Pattern Alert</h2>
-              <p className="text-[11px] text-white/60 max-w-[240px] leading-relaxed">
-                Wednesday (Mar 26) shows a <span className="text-white font-bold underline decoration-primary underline-offset-4">82% probability</span> of reaching the 20mm/hr trigger threshold.
-              </p>
+        {/* Monte Carlo Simulator Hero */}
+        <Card className="p-8 bg-slate-900 border-none rounded-[40px] text-center space-y-8 relative overflow-hidden shadow-2xl">
+           <div className="relative z-10">
+              <div className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em] mb-4">Monte Carlo Simulator</div>
+              <div className="text-display-l text-white text-3xl mb-1">₹842.00</div>
+              <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Expected Weekly Payout</div>
            </div>
-           <motion.div 
-             animate={{ x: [0, 10, 0], opacity: [0.05, 0.1, 0.05] }}
-             transition={{ repeat: Infinity, duration: 4 }}
-             className="absolute right-[-20px] bottom-[-20px] w-40 h-40 text-primary rotate-12"
-           >
-              <TrendingUp size={160} />
-           </motion.div>
+
+           {/* Probabilistic Bell Curve (SVG) */}
+           <div className="relative h-32 w-full group">
+              <svg viewBox="0 0 200 100" className="w-full h-full" preserveAspectRatio="none">
+                 <defs>
+                    <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+                       <stop offset="0%" stopColor="#FF6B2B" stopOpacity="0.4" />
+                       <stop offset="100%" stopColor="#FF6B2B" stopOpacity="0" />
+                    </linearGradient>
+                 </defs>
+                 <motion.path 
+                   d="M0,90 Q50,90 80,40 T120,40 T200,90" 
+                   fill="url(#curveGradient)" stroke="#FF6B2B" strokeWidth="2"
+                   initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2 }}
+                 />
+                 <line x1="80" y1="20" x2="80" y2="95" stroke="white" strokeWidth="0.5" strokeDasharray="2,2" opacity="0.2" />
+                 <line x1="120" y1="20" x2="120" y2="95" stroke="white" strokeWidth="0.5" strokeDasharray="2,2" opacity="0.2" />
+                 <motion.line x1="100" y1="20" x2="100" y2="95" stroke="#FF6B2B" strokeWidth="1.5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} />
+              </svg>
+              <div className="absolute inset-0 flex justify-between items-end px-4 text-[7px] font-bold text-white/20 uppercase tracking-widest pb-2">
+                 <span>95% CI (Min)</span>
+                 <span>95% CI (Max)</span>
+              </div>
+           </div>
+
+           <div className="flex justify-between items-center bg-white/5 border border-white/10 p-5 rounded-3xl relative z-10">
+              <div className="text-left">
+                 <div className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Confidence Interval</div>
+                 <div className="text-sm font-black text-white">₹640 — ₹1240</div>
+              </div>
+              <div className="text-right">
+                 <div className="text-[9px] font-bold text-primary uppercase tracking-widest">Reliability</div>
+                 <div className="text-sm font-black text-white">High (82.7%)</div>
+              </div>
+           </div>
+           
+           <Shield className="absolute right-[-20px] bottom-[-20px] w-48 h-48 text-white/5 opacity-10" />
         </Card>
 
         {/* Oracle Simulator Tool */}
