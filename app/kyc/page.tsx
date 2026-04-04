@@ -6,6 +6,7 @@ import { ChevronLeft, Shield, CheckCircle2, ArrowRight, UserCheck, Smartphone, L
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { MobileWrapper } from '@/components/shared/MobileWrapper';
 import { Logo } from '@/components/shared/Logo';
 import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
@@ -154,6 +155,4 @@ function ChevronRight({ size, className }: { size: number, className?: string })
       <path d="m9 18 6-6-6-6"/>
     </svg>
   );
-}
-  )
 }
