@@ -15,7 +15,6 @@ const platforms = ["Zomato", "Zepto", "Swiggy", "Blinkit", "Dunzo", "Porter", "O
 
 export default function DeliveryProfile() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(["Zomato"]);
-  const [radius, setRadius] = useState(5);
   const router = useRouter();
 
   const togglePlatform = (p: string) => {
@@ -71,49 +70,23 @@ export default function DeliveryProfile() {
         {/* Zone Map Upgrade */}
         <section className="space-y-4">
           <div className="flex justify-between items-center">
-             <label className="text-heading">Your Delivery Zone</label>
-             <div className="text-primary text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
-               <Navigation size={12} className="fill-primary animate-pulse" /> Bengaluru East
+             <label className="text-heading">Active Service Coverage</label>
+             <div className="text-emerald-600 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+               <Navigation size={12} className="fill-emerald-600 animate-pulse" /> Full City Active
              </div>
           </div>
           
           <div className="relative aspect-[4/3] rounded-[40px] overflow-hidden border border-border-light shadow-2xl group ring-4 ring-white">
-             {/* Tactical Map with Mesh Integration */}
+             {/* Tactical Map with Mesh Integration - Full City Scope */}
              <LiveMap />
              
-             {/* Dynamic Coverage Radius Overlay */}
-             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  style={{ 
-                    width: `${radius * 20 + 40}px`, 
-                    height: `${radius * 20 + 40}px` 
-                  }}
-                  className="border-2 border-primary border-dashed bg-primary/10 rounded-full relative flex items-center justify-center transition-all duration-300"
-                >
-                   <div className="absolute inset-0 bg-primary/5 rounded-full animate-pulse" />
-                   <div className="bg-ink-primary text-white text-[10px] font-black px-3 py-1 rounded-full shadow-xl border border-white/20 whitespace-nowrap">
-                      ~{radius} km Scope
-                   </div>
-                </motion.div>
-             </div>
-
              <div className="absolute top-4 left-4 z-40 bg-slate-900/80 backdrop-blur-md text-white text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full border border-white/10">
-                Oracle Mesh Active
+                Oracle Mesh Active • Bengaluru Hub
              </div>
-          </div>
 
-          <div className="space-y-4 bg-white p-6 rounded-[32px] border border-border-light shadow-sm">
-            <div className="flex justify-between items-center text-caption font-bold">
-              <span className="uppercase tracking-widest text-ink-hint">Coverage Radius</span>
-              <span className="text-primary font-mono text-lg">{radius}km</span>
-            </div>
-            <input 
-              type="range" min="1" max="15" value={radius} 
-              onChange={(e) => setRadius(parseInt(e.target.value))}
-              className="w-full h-2 bg-slate-100 rounded-full appearance-none accent-primary cursor-pointer"
-            />
+             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 bg-white/90 backdrop-blur-md text-ink-primary text-[9px] font-black uppercase tracking-widest px-4 py-2 rounded-full border border-border-light shadow-xl">
+                Multi-City Oracle Active
+             </div>
           </div>
         </section>
 
@@ -145,7 +118,7 @@ export default function DeliveryProfile() {
             <h4 className="text-subheading underline underline-offset-4 decoration-primary decoration-2">Privacy Control</h4>
           </div>
           <p className="text-body text-ink-muted leading-relaxed">
-            Your location data is only used for risk analysis within your selected radius. We never track you outside your working hours.
+            Your location data is only used for risk analysis across our active service network. We never track you outside your working hours.
           </p>
         </section>
       </main>
