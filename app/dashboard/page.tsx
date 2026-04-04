@@ -143,7 +143,7 @@ export default function Dashboard() {
                  <Radio size={12} className="animate-pulse" /> Live IoT Feed
               </div>
            </div>
-           <Card className="h-[300px] w-full rounded-[48px] overflow-hidden border-border-light shadow-2xl relative group">
+           <Card className="h-[350px] w-full rounded-[48px] overflow-hidden border-border-light shadow-2xl relative group bg-slate-50">
               <LiveMap />
               <div className="absolute top-4 left-4 z-40 bg-ink-primary text-white text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full shadow-lg border border-white/10 animate-pulse">
                 524 Localized Rider Nodes
@@ -151,29 +151,6 @@ export default function Dashboard() {
            </Card>
         </section>
 
-        {/* Feature Grid: Forecast vs Reinsurance */}
-        <div className="grid grid-cols-2 gap-4">
-           <button 
-             onClick={() => router.push('/forecast')}
-             className="text-left bg-white border border-border-light p-6 rounded-[32px] shadow-sm hover:shadow-md transition-all group"
-           >
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                 <Activity size={20} />
-              </div>
-              <h3 className="text-sm font-black text-ink-primary mb-1">Forecast</h3>
-              <p className="text-[10px] text-ink-hint leading-tight">Simulate triggers and payouts.</p>
-           </button>
-           <button 
-             onClick={() => router.push('/reinsurance')}
-             className="text-left bg-white border border-border-light p-6 rounded-[32px] shadow-sm hover:shadow-md transition-all group"
-           >
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
-                 <Landmark size={20} />
-              </div>
-              <h3 className="text-sm font-black text-ink-primary mb-1">Reinsurance</h3>
-              <p className="text-[10px] text-ink-hint leading-tight">Institutional solvency dashboard.</p>
-           </button>
-        </div>
         {/* Hero Card: Coverage Status */}
         <Card variant="dark" className="p-8 bg-slate-900 border-none rounded-[40px] relative overflow-hidden group shadow-2xl">
            <div className="relative z-10 flex flex-col h-full">
@@ -226,7 +203,7 @@ export default function Dashboard() {
                  <Activity size={20} />
               </div>
               <h3 className="text-sm font-black text-ink-primary mb-1">Forecast</h3>
-              <p className="text-[10px] text-ink-hint leading-tight">Simulate triggers and payouts.</p>
+              <p className="text-[10px] text-ink-hint leading-tight text-balance">Simulate triggers and payouts in real-time.</p>
            </button>
            <button 
              onClick={() => router.push('/reinsurance')}
@@ -236,7 +213,7 @@ export default function Dashboard() {
                  <Landmark size={20} />
               </div>
               <h3 className="text-sm font-black text-ink-primary mb-1">Reinsurance</h3>
-              <p className="text-[10px] text-ink-hint leading-tight">Institutional solvency dashboard.</p>
+              <p className="text-[10px] text-ink-hint leading-tight text-balance">Institutional solvency & market health.</p>
            </button>
         </div>
 
