@@ -1,7 +1,7 @@
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Shield, CheckCircle2, ArrowRight, UserCheck, Smartphone, Landmark, FileText, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
