@@ -34,47 +34,53 @@ const quickActions = [
 ];
 
 export default function Dashboard() {
-  const router = useRouter();
   const { translations } = useApp();
   const [profile, setProfile] = useState<any>(null);
   const [meshData, setMeshData] = useState<any>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
+    setIsMounted(true);
     // Fetch initial profile
-    fetch('/api/profile').then(res => res.json()).then(setProfile);
+    fetch('/api/profile').then(res => res.json()).then(setProfile).catch(() => {});
     
     // Polling Mesh Telemetry every 5 seconds
     const interval = setInterval(() => {
-      fetch('/api/mesh').then(res => res.json()).then(setMeshData);
+      fetch('/api/mesh').then(res => res.json()).then(setMeshData).catch(() => {});
     }, 5000);
     
     return () => clearInterval(interval);
   }, []);
 
+  if (!isMounted) return null;
+
   return (
     <MobileWrapper withNav className="bg-surface-base px-0 pt-8 pb-32">
       {/* Header & Neural Hub */}
       <header className="px-6 pt-4 mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4 mt-4">
-            <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white font-black text-xl shadow-xl ring-4 ring-white">
-              {profile?.name?.split(' ').map((n:any) => n[0]).join('') || 'RK'}
-            </div>
-            <div>
-              <div className="text-display-l text-2xl font-black">{profile?.name || 'Ravi Kumar'}</div>
-              <div className="flex items-center gap-1.5 text-caption font-bold text-primary uppercase tracking-widest">
-                <MapPin size={12} className="fill-primary" /> {profile?.cityHub || 'Bengaluru East'}
-              </div>
-            </div>
+        <div className="flex justify-between items-center mb-10">
+           <Logo withText size={42} />
+           <div className="flex gap-2">
+              <button onClick={() => router.push('/support')} className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
+                <HelpCircle size={20} className="text-ink-primary" />
+              </button>
+              <button className="relative w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
+                 <Bell size={20} className="text-ink-primary" />
+                 <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white" />
+              </button>
+           </div>
+        </div>
+
+        <div className="flex items-center gap-5 px-1">
+          <div className="w-16 h-16 rounded-[24px] bg-slate-900 flex items-center justify-center text-white font-black text-2xl shadow-xl ring-4 ring-white">
+            {profile?.name?.split(' ').map((n:any) => n[0]).join('') || 'RK'}
           </div>
-          <div className="flex gap-2">
-             <button onClick={() => router.push('/support')} className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
-               <HelpCircle size={20} className="text-ink-primary" />
-             </button>
-             <button className="relative w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
-                <Bell size={20} className="text-ink-primary" />
-                <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white" />
-             </button>
+          <div>
+            <div className="text-display-m text-2xl font-black tracking-tight">{profile?.name || 'Ravi Kumar'}</div>
+            <div className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-[0.2em]">
+              <MapPin size={12} className="fill-primary" /> {profile?.cityHub || 'Bengaluru East'}
+            </div>
           </div>
         </div>
 
