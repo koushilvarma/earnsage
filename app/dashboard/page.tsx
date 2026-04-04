@@ -37,18 +37,25 @@ export default function Dashboard() {
   const { translations } = useApp();
   const [profile, setProfile] = useState<any>(null);
   const [meshData, setMeshData] = useState<any>(null);
+  const [weather, setWeather] = useState<any>(null);
+  const [actuary, setActuary] = useState<any>(null);
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
-    // Fetch initial profile
+    // Fetch initial profile & actuary
     fetch('/api/profile').then(res => res.json()).then(setProfile).catch(() => {});
+    fetch('/api/actuary').then(res => res.json()).then(setActuary).catch(() => {});
     
-    // Polling Mesh Telemetry every 5 seconds
+    // Polling Mesh & Weather every 5 seconds
     const interval = setInterval(() => {
       fetch('/api/mesh').then(res => res.json()).then(setMeshData).catch(() => {});
+      fetch('/api/weather').then(res => res.json()).then(setWeather).catch(() => {});
     }, 5000);
+    
+    // Initial weather fetch
+    fetch('/api/weather').then(res => res.json()).then(setWeather).catch(() => {});
     
     return () => clearInterval(interval);
   }, []);
@@ -57,8 +64,8 @@ export default function Dashboard() {
 
   return (
     <MobileWrapper withNav className="bg-surface-base px-0 pt-8 pb-32">
-      {/* Header & Neural Hub */}
-      <header className="px-6 pt-4 mb-8">
+      {/* Header & Neural Oracle */}
+      <header className="px-6 pt-4 mb-4">
         <div className="flex justify-between items-center mb-10">
            <Logo withText size={42} />
            <div className="flex gap-2">
@@ -72,16 +79,56 @@ export default function Dashboard() {
            </div>
         </div>
 
-        <div className="flex items-center gap-5 px-1">
+        <div className="flex items-center gap-5 px-1 mb-8">
           <div className="w-16 h-16 rounded-[24px] bg-slate-900 flex items-center justify-center text-white font-black text-2xl shadow-xl ring-4 ring-white">
             {profile?.name?.split(' ').map((n:any) => n[0]).join('') || 'RK'}
           </div>
           <div>
             <div className="text-display-m text-2xl font-black tracking-tight">{profile?.name || 'Ravi Kumar'}</div>
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-              <MapPin size={12} className="fill-primary" /> {profile?.cityHub || 'Bengaluru East'}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-[0.2em]">
+                <MapPin size={10} className="fill-primary" /> {profile?.cityHub || 'Bengaluru East'}
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] font-bold text-ink-hint uppercase tracking-widest">
+                <ShieldCheck size={10} className={cn(profile?.activeShield ? "text-emerald-500" : "text-amber-500")} /> {profile?.protectionTier || 'Premium Shield'} · ₹{actuary?.total || '57.82'}/wk
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Dynamic Risk & Weather Oracle */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+           <div className="p-5 bg-white border border-border-light rounded-[32px] shadow-sm relative overflow-hidden group">
+              <div className="relative z-10">
+                 <div className="flex items-center gap-2 mb-3">
+                    <CloudRain size={16} className="text-blue-500" />
+                    <span className="text-[9px] font-black text-ink-hint uppercase tracking-widest">Neural Weather</span>
+                 </div>
+                 <div className="text-xl font-black text-ink-primary mb-1">
+                    {weather?.condition || 'Cloudy'}
+                 </div>
+                 <div className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">
+                    {weather?.forecast?.[1]?.condition || 'Rain'} at {weather?.forecast?.[1]?.time || '15:00'}
+                 </div>
+              </div>
+              {weather?.isSurgeActive && (
+                 <div className="absolute top-3 right-3 animate-pulse">
+                    <div className="w-2 h-2 bg-primary rounded-full" />
+                 </div>
+              )}
+           </div>
+           <div className="p-5 bg-white border border-border-light rounded-[32px] shadow-sm relative overflow-hidden">
+              <div className="flex items-center gap-2 mb-3">
+                 <Zap size={16} className="text-primary" />
+                 <span className="text-[9px] font-black text-ink-hint uppercase tracking-widest">Surge Mode</span>
+              </div>
+              <div className="text-xl font-black text-ink-primary mb-1">
+                 {actuary?.surgeMultiplier || '1.0'}x
+              </div>
+              <div className={cn("text-[10px] font-bold uppercase tracking-widest", weather?.isSurgeActive ? "text-primary" : "text-emerald-500")}>
+                 {weather?.isSurgeActive ? 'Premium Surge Active' : 'Stable Rates'}
+              </div>
+           </div>
         </div>
 
         {/* Neural Hub Visualization */}
@@ -123,8 +170,8 @@ export default function Dashboard() {
               </div>
            </div>
            {/* Decorative background labels */}
-           <div className="absolute top-2 right-4 text-[7px] font-mono text-white/10 uppercase">PREDICTING: Flood_Prob_0.14</div>
-           <div className="absolute bottom-2 right-4 text-[7px] font-mono text-white/10 uppercase">CLASSIFYING: Rain_Cell_41</div>
+           <div className="absolute top-2 right-4 text-[7px] font-mono text-white/10 uppercase">PREDICTING: {weather?.isSurgeActive ? 'Delivery_Outrage_Prob_0.84' : 'Flood_Prob_0.14'}</div>
+           <div className="absolute bottom-2 right-4 text-[7px] font-mono text-white/10 uppercase">CLASSIFYING: {weather?.condition === 'Storm' ? 'Storm_Cell_01' : 'Rain_Cell_41'}</div>
         </div>
       </header>
 

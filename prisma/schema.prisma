@@ -15,7 +15,10 @@ model UserProfile {
   kycStatus       String   @default("PENDING") // PENDING, PROCESSING, VERIFIED
   platforms       String?  @default("Zomato,Zepto") // Comma-separated or JSON string
   protectionTier  String   @default("STANDARD")
-  activeShield   Boolean  @default(false)
+  activeShield    Boolean  @default(false)
+  walletBalance   Float    @default(500.0)
+  currentPremium  Float    @default(57.82)
+  activePolicyEnd DateTime?
   updatedAt       DateTime @updatedAt
 }
 

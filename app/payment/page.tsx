@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ShieldCheck, CreditCard, Smartphone, Banknote, Shield, ArrowRight, Lock, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -21,14 +21,36 @@ const paymentMethods = [
 export default function Payment() {
   const [selected, setSelected] = useState('phonepe');
   const [loading, setLoading] = useState(false);
+  const [actuary, setActuary] = useState<any>(null);
   const router = useRouter();
 
-  const handlePay = () => {
+  useEffect(() => {
+    fetch('/api/actuary').then(res => res.json()).then(setActuary).catch(() => {});
+  }, []);
+
+  const handlePay = async () => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/payment/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: actuary?.total || '57.82', method: selected })
+      });
+      const data = await res.json();
+      if (data.success) {
+        // Persist the shield state in the profile (Mocking the DB update)
+        await fetch('/api/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ activeShield: true, currentPremium: actuary?.total })
+        });
+        router.push('/activation-success');
+      }
+    } catch (error) {
+      console.error('Payment failed:', error);
+    } finally {
       setLoading(false);
-      router.push('/activation-success');
-    }, 2000);
+    }
   };
 
   return (
@@ -49,20 +71,26 @@ export default function Payment() {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-body text-ink-secondary">Plan Selection</span>
-              <span className="text-body font-bold text-ink-primary">Standard Shield</span>
+              <span className="text-body font-bold text-ink-primary">{actuary?.tier || 'Premium Shield'}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-body text-ink-secondary">Base Coverage</span>
-              <span className="text-body font-bold text-ink-primary">₹2,100 / week</span>
+              <span className="text-body text-ink-secondary">Daily Premium</span>
+              <span className="text-body font-bold text-ink-primary">₹{actuary?.baseRate?.toFixed(2) || '49.00'}</span>
             </div>
+            {actuary?.isSurgeActive && (
+                <div className="flex justify-between items-center text-primary font-bold">
+                    <span className="text-caption italic underline">Surge Multiplier</span>
+                    <span className="font-mono text-xs">{actuary?.surgeMultiplier}x</span>
+                </div>
+            )}
             <div className="flex justify-between items-center text-caption">
               <span>GST (18%)</span>
-              <span className="font-mono">₹8.82</span>
+              <span className="font-mono">₹{actuary?.gst?.toFixed(2) || '8.82'}</span>
             </div>
             <div className="h-[1px] w-full bg-surface-sunken" />
             <div className="flex justify-between items-center pt-2">
               <span className="text-heading">Total Amount</span>
-              <span className="text-mono-xl text-2xl">₹57.82</span>
+              <span className="text-mono-xl text-2xl">₹{actuary?.total || '57.82'}</span>
             </div>
           </div>
         </Card>
@@ -105,7 +133,7 @@ export default function Payment() {
               />
               <div className="flex items-center gap-2 px-2 text-status-success">
                 <CheckCircle2 size={14} />
-                <span className="text-[11px] font-bold uppercase tracking-wide">Priya Sharma · SBI</span>
+                <span className="text-[11px] font-bold uppercase tracking-wide">Ravi Kumar · SBI</span>
               </div>
             </motion.div>
           )}
@@ -139,7 +167,7 @@ export default function Payment() {
           loading={loading}
           onClick={handlePay}
         >
-          Pay ₹57.82 & Activate <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+          Pay ₹{actuary?.total || '57.82'} & Activate <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
         </Button>
       </footer>
     </MobileWrapper>
