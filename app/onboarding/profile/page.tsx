@@ -9,6 +9,8 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { MobileWrapper } from '@/components/shared/MobileWrapper';
 
+import { LiveMap } from '@/components/shared/LiveMap';
+
 const platforms = ["Zomato", "Zepto", "Swiggy", "Blinkit", "Dunzo", "Porter", "Other"];
 
 export default function DeliveryProfile() {
@@ -56,7 +58,7 @@ export default function DeliveryProfile() {
                 className={cn(
                   "px-5 py-2.5 rounded-full text-xs font-bold uppercase transition-all border-1.5",
                   selectedPlatforms.includes(p) 
-                    ? "bg-ink-primary border-ink-primary text-white" 
+                    ? "bg-ink-primary border-ink-primary text-white shadow-lg" 
                     : "bg-surface-raised border-border-light text-ink-primary hover:border-border-mid"
                 )}
               >
@@ -66,47 +68,51 @@ export default function DeliveryProfile() {
           </div>
         </section>
 
-        {/* Zone Map */}
+        {/* Zone Map Upgrade */}
         <section className="space-y-4">
           <div className="flex justify-between items-center">
              <label className="text-heading">Your Delivery Zone</label>
-             <div className="text-primary text-xs font-bold flex items-center gap-1.5">
-               <Navigation size={12} className="fill-primary" /> Bengaluru East
+             <div className="text-primary text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
+               <Navigation size={12} className="fill-primary animate-pulse" /> Bengaluru East
              </div>
           </div>
           
-          <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-border-light shadow-card group">
-            {/* Mock Map Image (Mapbox Light Style) */}
-            <div className="absolute inset-0 bg-[#F1F3F4] bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v11/static/77.6412,12.9716,13/400x300?access_token=pk.mock')] bg-cover">
-               {/* Center Pin */}
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                 <MapPin className="text-primary w-8 h-8 fill-primary/20 drop-shadow-md" />
-                 <div className="absolute inset-0 w-8 h-8 bg-primary/20 rounded-full animate-ping" />
-               </div>
-               
-               {/* Zone Circle */}
-               <div 
-                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-dashed border-ink-primary bg-ink-primary/5 rounded-full transition-all duration-300 pointer-events-none flex items-center justify-center"
-                 style={{ width: `${radius * 30}px`, height: `${radius * 30}px` }}
-               >
-                 <span className="text-[10px] font-bold text-ink-primary bg-white px-2 py-0.5 rounded border border-border-light">~{radius} km</span>
-               </div>
-            </div>
-            
-            <button className="absolute bottom-4 right-4 w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center border border-border-light">
-              <Navigation size={18} className="text-ink-primary" />
-            </button>
+          <div className="relative aspect-[4/3] rounded-[40px] overflow-hidden border border-border-light shadow-2xl group ring-4 ring-white">
+             {/* Tactical Map with Mesh Integration */}
+             <LiveMap />
+             
+             {/* Dynamic Coverage Radius Overlay */}
+             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  style={{ 
+                    width: `${radius * 20 + 40}px`, 
+                    height: `${radius * 20 + 40}px` 
+                  }}
+                  className="border-2 border-primary border-dashed bg-primary/10 rounded-full relative flex items-center justify-center transition-all duration-300"
+                >
+                   <div className="absolute inset-0 bg-primary/5 rounded-full animate-pulse" />
+                   <div className="bg-ink-primary text-white text-[10px] font-black px-3 py-1 rounded-full shadow-xl border border-white/20 whitespace-nowrap">
+                      ~{radius} km Scope
+                   </div>
+                </motion.div>
+             </div>
+
+             <div className="absolute top-4 left-4 z-40 bg-slate-900/80 backdrop-blur-md text-white text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full border border-white/10">
+                Oracle Mesh Active
+             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex justify-between text-caption font-bold">
-              <span>Coverage Radius</span>
-              <span className="text-ink-primary font-mono">{radius} km</span>
+          <div className="space-y-4 bg-white p-6 rounded-[32px] border border-border-light shadow-sm">
+            <div className="flex justify-between items-center text-caption font-bold">
+              <span className="uppercase tracking-widest text-ink-hint">Coverage Radius</span>
+              <span className="text-primary font-mono text-lg">{radius}km</span>
             </div>
             <input 
               type="range" min="1" max="15" value={radius} 
               onChange={(e) => setRadius(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-surface-sunken rounded-full appearance-none accent-ink-primary cursor-pointer"
+              className="w-full h-2 bg-slate-100 rounded-full appearance-none accent-primary cursor-pointer"
             />
           </div>
         </section>

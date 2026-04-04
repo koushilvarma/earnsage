@@ -124,47 +124,51 @@ export default function RiskAnalysis() {
 
   if (loading) {
     return (
-      <MobileWrapper className="bg-[#0A0F1E] flex flex-col items-center justify-center p-8 overflow-hidden">
+      <MobileWrapper className="bg-surface-base flex flex-col items-center justify-center p-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
         
         {/* Radar Scan Animation */}
         <div className="relative mb-16">
-          <div className="w-56 h-56 rounded-full border border-white/5 flex items-center justify-center relative overflow-hidden">
+          <div className="w-64 h-64 rounded-full border border-border-light flex items-center justify-center relative overflow-hidden bg-white shadow-inner">
              {/* Sweeper */}
              <motion.div 
                animate={{ rotate: 360 }}
                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-               className="absolute inset-0 bg-gradient-to-r from-primary/40 to-transparent origin-center rounded-full"
+               className="absolute inset-0 bg-gradient-to-r from-primary/30 to-transparent origin-center rounded-full"
                style={{ clipPath: "polygon(50% 50%, 100% 0, 100% 100%)" }}
              />
-             {/* Nodes */}
-             <div className="absolute top-1/4 left-1/3 w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-             <div className="absolute bottom-1/3 right-1/4 w-1 h-1 rounded-full bg-primary/40" />
-             <div className="absolute top-1/2 right-1/2 w-2 h-2 rounded-full border border-primary/40 animate-ping" />
+             {/* Pulsing Rings */}
+             <div className="absolute inset-4 rounded-full border border-border-light/50" />
+             <div className="absolute inset-12 rounded-full border border-border-light/30" />
              
-             <div className="relative z-10 w-24 h-24 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center">
-                <Database className="text-white/20 w-10 h-10" />
+             {/* Active Nodes */}
+             <div className="absolute top-1/4 left-1/3 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(255,107,43,0.5)] animate-pulse" />
+             <div className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 rounded-full bg-primary/40" />
+             <div className="absolute top-1/2 right-1/2 w-3 h-3 rounded-full border border-primary/40 animate-ping" />
+             
+             <div className="relative z-10 w-24 h-24 rounded-3xl bg-white border border-border-light shadow-lg flex items-center justify-center">
+                <Database className="text-primary w-10 h-10 animate-bounce" />
              </div>
           </div>
         </div>
 
         <div className="w-full space-y-8 relative z-10">
           <div className="text-center space-y-4">
-             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-[10px] font-bold text-white uppercase tracking-widest">
+             <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-border-light text-[10px] font-black text-ink-primary uppercase tracking-widest shadow-sm">
                <ShieldCheck size={14} className="text-primary" />
                Model AUC: 0.847 • Trained on 618,310 points
              </div>
-             <p className="text-[11px] text-white/60 max-w-[280px] mx-auto leading-relaxed">
+             <p className="text-[11px] font-bold text-ink-hint max-w-[280px] mx-auto leading-relaxed uppercase tracking-wider">
                Neural engines are analyzing multi-sensor telemetry for your specific sector.
              </p>
           </div>
 
           {/* Terminal Box */}
-          <div className="bg-black/40 border border-white/5 p-4 rounded-xl font-mono text-[8px] text-primary/60 space-y-1 h-[100px] overflow-hidden">
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl font-mono text-[9px] text-primary/80 space-y-2 h-[120px] overflow-hidden shadow-2xl">
              {terminalLogs.map((log, i) => (
-                <div key={i} className="flex gap-2">
-                  <span className="opacity-40">[{new Date().toLocaleTimeString()}]</span>
-                  <span>{log}</span>
+                <div key={i} className="flex gap-3">
+                  <span className="text-white/20 font-bold">[{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}]</span>
+                  <span className="font-bold tracking-tight">{log}</span>
                 </div>
              ))}
           </div>
@@ -172,9 +176,8 @@ export default function RiskAnalysis() {
       </MobileWrapper>
     );
   }
-
   return (
-    <MobileWrapper className="bg-[#0A0F1E] flex flex-col min-h-screen text-white px-6 pt-8 pb-32">
+    <MobileWrapper className="bg-surface-base flex flex-col min-h-screen text-ink-primary px-6 pt-8 pb-32">
       <header className="flex justify-between items-center mb-10">
         <div>
           <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2">Validated Oracle</div>

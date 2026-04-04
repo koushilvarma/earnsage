@@ -262,7 +262,7 @@ export default function Dashboard() {
 
         {/* Footer Info */}
         <div className="text-center py-8">
-           <div className="text-[9px] font-bold text-ink-hint uppercase tracking-[0.4em] mb-4">Earn Sage Node V7.2.4</div>
+           <div className="text-[9px] font-bold text-ink-hint uppercase tracking-[0.4em] mb-4">Earn Sage Node V10.2.4</div>
            <div className="flex justify-center gap-6">
               <button className="text-[10px] font-bold text-ink-secondary uppercase tracking-widest border-b border-transparent hover:border-ink-secondary">Privacy</button>
               <button className="text-[10px] font-bold text-ink-secondary uppercase tracking-widest border-b border-transparent hover:border-ink-secondary">Legal</button>
