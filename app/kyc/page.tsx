@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,9 +16,27 @@ export default function KYCVerification() {
   const [status, setStatus] = useState<'idle' | 'processing' | 'verified'>('idle');
   const router = useRouter();
 
-  const startVerification = () => {
+  useEffect(() => {
+    fetch('/api/kyc').then(res => res.json()).then(data => {
+      if (data.status === 'VERIFIED') setStatus('verified');
+    });
+  }, []);
+
+  const startVerification = async () => {
     setStatus('processing');
-    setTimeout(() => setStatus('verified'), 3500);
+    try {
+      const res = await fetch('/api/kyc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'VERIFY' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setTimeout(() => setStatus('verified'), 3500);
+      }
+    } catch (err) {
+      setStatus('idle');
+    }
   };
 
   return (

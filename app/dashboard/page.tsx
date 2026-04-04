@@ -1,8 +1,9 @@
 "use client";
+export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight, UserCheck, Sliders, Smartphone, MoreHorizontal, Radio } from 'lucide-react';
+import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, MapPin, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight, UserCheck, Sliders, Smartphone, MoreHorizontal, Radio } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -35,21 +36,36 @@ const quickActions = [
 export default function Dashboard() {
   const router = useRouter();
   const { translations } = useApp();
-  const [isMounted, setIsMounted] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
+  const [meshData, setMeshData] = useState<any>(null);
 
   useEffect(() => {
-    setIsMounted(true);
+    // Fetch initial profile
+    fetch('/api/profile').then(res => res.json()).then(setProfile);
+    
+    // Polling Mesh Telemetry every 5 seconds
+    const interval = setInterval(() => {
+      fetch('/api/mesh').then(res => res.json()).then(setMeshData);
+    }, 5000);
+    
+    return () => clearInterval(interval);
   }, []);
-
-  if (!isMounted) return null;
 
   return (
     <MobileWrapper withNav className="bg-surface-base px-0 pt-8 pb-32">
       {/* Header & Neural Hub */}
       <header className="px-6 pt-4 mb-8">
         <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <Logo withText size={48} />
+          <div className="flex items-center gap-4 mt-4">
+            <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white font-black text-xl shadow-xl ring-4 ring-white">
+              {profile?.name?.split(' ').map((n:any) => n[0]).join('') || 'RK'}
+            </div>
+            <div>
+              <div className="text-display-l text-2xl font-black">{profile?.name || 'Ravi Kumar'}</div>
+              <div className="flex items-center gap-1.5 text-caption font-bold text-primary uppercase tracking-widest">
+                <MapPin size={12} className="fill-primary" /> {profile?.cityHub || 'Bengaluru East'}
+              </div>
+            </div>
           </div>
           <div className="flex gap-2">
              <button onClick={() => router.push('/support')} className="w-11 h-11 rounded-2xl bg-white border border-border-light flex items-center justify-center shadow-sm">
@@ -141,7 +157,7 @@ export default function Dashboard() {
            <Card className="h-[350px] w-full rounded-[48px] overflow-hidden border-border-light shadow-2xl relative group bg-slate-50">
               <LiveMap />
               <div className="absolute top-4 left-4 z-40 bg-ink-primary text-white text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full shadow-lg border border-white/10 animate-pulse">
-                524 Localized Rider Nodes
+                {meshData?.activeNodes || 5} Localized Rider Nodes
               </div>
            </Card>
         </section>

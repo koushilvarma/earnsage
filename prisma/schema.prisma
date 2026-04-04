@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model UserProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique @default("demo-user")
+  name            String?  @default("Ravi Kumar")
+  cityHub         String?  @default("Bengaluru East")
+  kycStatus       String   @default("PENDING") // PENDING, PROCESSING, VERIFIED
+  platforms       String?  @default("Zomato,Zepto") // Comma-separated or JSON string
+  protectionTier  String   @default("STANDARD")
+  activeShield   Boolean  @default(false)
+  updatedAt       DateTime @updatedAt
+}
+
+model Payout {
+  id        String   @id @default(cuid())
+  amount    Float
+  reason    String
+  timestamp DateTime @default(now())
+  status    String   @default("COMPLETED")
+}
+
+model MeshNode {
+  id        String   @id @default(cuid())
+  lat       Float
+  lng       Float
+  type      String   @default("RIDER") // RIDER, SENSOR, HUB
+  active    Boolean  @default(true)
+  timestamp DateTime @default(now())
+}
