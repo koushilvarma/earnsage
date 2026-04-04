@@ -180,11 +180,19 @@ export default function RiderSafeMode() {
                   </motion.div>
                </div>
                
-               <div className="space-y-4">
-                  <div className="text-mono-l text-xl tracking-widest uppercase italic">Mesh Scanning</div>
-                  <div className="text-[11px] text-primary/60 font-medium uppercase tracking-[0.1em] h-4">
-                    {alertStage === 1 ? "Anomalous cell detected..." : "Connected to localized IoT mesh"}
+               <div className="space-y-6">
+                  <div className="space-y-2">
+                     <div className="text-mono-l text-xl tracking-widest uppercase italic">Mesh Scanning</div>
+                     <div className="text-[11px] text-primary/60 font-medium uppercase tracking-[0.1em] h-4">
+                       {alertStage === 1 ? "Anomalous cell detected..." : "Connected to localized IoT mesh"}
+                     </div>
                   </div>
+                  <Button 
+                    onClick={() => setAlertStage(2)}
+                    className="bg-primary/20 border border-primary/40 text-primary h-12 px-6 rounded-full text-[10px] uppercase font-black tracking-widest hover:bg-primary hover:text-white transition-all animate-pulse"
+                  >
+                    Simulate Voice SOS 🎙️
+                  </Button>
                </div>
 
                <Button 

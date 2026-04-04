@@ -21,7 +21,8 @@ import {
   Filter, 
   Maximize2, 
   ShieldCheck,
-  TrendingUp
+  TrendingUp,
+  X
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -58,6 +59,7 @@ const triggers = [
 export default function TriggerMonitor() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'map' | 'list'>('map');
+  const [showExplainer, setShowExplainer] = useState(false);
 
   return (
     <MobileWrapper withNav className="bg-surface-base px-6 pt-8 pb-32">
@@ -128,19 +130,71 @@ export default function TriggerMonitor() {
               <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink-muted">Predictive Impact</h3>
               <div className="text-[9px] font-bold text-primary uppercase tracking-widest underline underline-offset-4">ML Insight</div>
            </div>
-           <Card className="p-6 bg-slate-900 border-none text-white relative overflow-hidden">
-              <div className="relative z-10 flex gap-6 items-center">
-                 <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-primary border border-white/10">
-                    <TrendingUp size={28} />
+           <Card className="p-6 bg-slate-900 border-none text-white relative overflow-hidden group">
+              <div className="relative z-10 flex justify-between items-center">
+                 <div className="flex gap-6 items-center">
+                    <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-primary border border-white/10">
+                       <TrendingUp size={28} />
+                    </div>
+                    <div>
+                       <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Estimated Payout Window</div>
+                       <div className="text-heading text-lg">₹400 / session</div>
+                       <div className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest mt-1">Probability 88%</div>
+                    </div>
                  </div>
-                 <div>
-                    <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Estimated Payout Window</div>
-                    <div className="text-heading text-lg">₹400 / session</div>
-                    <div className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest mt-1">Probability 88%</div>
-                 </div>
+                 <button 
+                   onClick={() => setShowExplainer(true)}
+                   className="relative px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all"
+                 >
+                   Explain Analysis
+                   <span className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-primary text-white text-[7px] font-black rounded-full border border-slate-900">NEW</span>
+                 </button>
               </div>
               <Activity className="absolute right-[-10px] top-[-10px] w-24 h-24 text-white/5" />
            </Card>
+
+           {/* Explainability Modal */}
+           <AnimatePresence>
+             {showExplainer && (
+               <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowExplainer(false)} className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+                 <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="bg-white rounded-[40px] w-full max-w-sm p-8 relative z-10 overflow-hidden shadow-2xl">
+                    <div className="flex justify-between items-start mb-8">
+                       <div>
+                          <h3 className="text-xl font-black text-ink-primary">Model Weights</h3>
+                          <p className="text-[10px] font-bold text-ink-hint uppercase tracking-widest">SHAP Interpretability Layer</p>
+                       </div>
+                       <button onClick={() => setShowExplainer(false)} className="w-10 h-10 rounded-full bg-surface-raised flex items-center justify-center text-ink-muted">
+                          <X size={18} />
+                       </button>
+                    </div>
+                    
+                    <div className="space-y-6">
+                       {[
+                         { label: "Rainfall Intensity", weight: 82, color: "bg-primary" },
+                         { label: "AQI Delta", weight: 12, color: "bg-blue-500" },
+                         { label: "Historical Bias", weight: 4, color: "bg-slate-400" },
+                         { label: "Mesh Consensus", weight: 2, color: "bg-emerald-500" }
+                       ].map((feat, i) => (
+                         <div key={i} className="space-y-2">
+                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                               <span className="text-ink-secondary">{feat.label}</span>
+                               <span className="text-ink-primary">+{feat.weight}%</span>
+                            </div>
+                            <div className="h-2 w-full bg-surface-sunken rounded-full overflow-hidden">
+                               <motion.div initial={{ width: 0 }} animate={{ width: `${feat.weight}%` }} transition={{ delay: 0.2 + i * 0.1 }} className={cn("h-full rounded-full", feat.color)} />
+                            </div>
+                         </div>
+                       ))}
+                    </div>
+
+                    <div className="mt-10 p-5 bg-surface-raised rounded-3xl border border-border-light text-[10px] text-ink-muted leading-relaxed italic">
+                       The model identifies **Precipitation** as the primary risk vector. Disruption threshold (40mm/hr) will likely be breached within 18 minutes.
+                    </div>
+                 </motion.div>
+               </div>
+             )}
+           </AnimatePresence>
         </section>
 
         {/* Expert Analysis Sidenote */}

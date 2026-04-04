@@ -13,6 +13,13 @@ const hotspots = [
   { id: 'mgroad', name: 'MG Road Metro', x: 40, y: 35, risk: 6.7, status: 'Elevated', color: 'bg-status-danger' },
 ];
 
+// Simulated Mesh Riders
+const meshRiders = [...Array(12)].map((_, i) => ({
+  id: i,
+  x: 20 + Math.random() * 60,
+  y: 20 + Math.random() * 60,
+}));
+
 export const LiveMap = () => {
   const [selected, setSelected] = useState(hotspots[0]);
 
@@ -33,6 +40,18 @@ export const LiveMap = () => {
 
       {/* Heatmap Overlays */}
       <div className="absolute inset-0 bg-gradient-to-br from-status-danger/5 via-transparent to-emerald-500/5" />
+
+      {/* Ghost Riders (Mesh Network) */}
+      {meshRiders.map((rider) => (
+        <motion.div
+          key={rider.id}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 3, repeat: Infinity, delay: Math.random() * 2 }}
+          style={{ left: `${rider.x}%`, top: `${rider.y}%` }}
+          className="absolute w-1.5 h-1.5 bg-emerald-500 rounded-full blur-[1px] z-10"
+        />
+      ))}
 
       {/* Hotspots */}
       {hotspots.map((spot) => (
