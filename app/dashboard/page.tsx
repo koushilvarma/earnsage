@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, MapPin, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight, UserCheck, Sliders, Smartphone, MoreHorizontal, Radio } from 'lucide-react';
+import { Shield, Zap, Wind, CloudRain, AlertTriangle, ArrowRight, Bell, ChevronRight, Wallet, Map as MapIcon, MapPin, Info, HelpCircle, ShieldCheck, Sparkles, TrendingUp, Landmark, Activity, ArrowUpRight, UserCheck, Sliders, Smartphone, MoreHorizontal, Radio, Brain, Trophy, Medal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -27,10 +27,10 @@ const chartData = [
 
 const quickActions = [
   { id: 'kyc', label: 'Verify KYC', icon: UserCheck, path: '/kyc', color: 'bg-emerald-500/10 text-emerald-600' },
-  { id: 'forecast', label: 'Simulator', icon: Activity, path: '/forecast', color: 'bg-primary/10 text-primary' },
-  { id: 'reinsurance', label: 'Institutional', icon: Landmark, path: '/reinsurance', color: 'bg-blue-500/10 text-blue-600' },
-  { id: 'calculator', label: 'Calculator', icon: Wallet, path: '/calculator', color: 'bg-purple-500/10 text-purple-600' },
+  { id: 'audit', label: 'Neural Audit', icon: Brain, path: '/profile/ai-audit', color: 'bg-slate-900 text-white shadow-lg' },
   { id: 'customize', label: 'Custom Armor', icon: Sliders, path: '/customize', color: 'bg-amber-500/10 text-amber-600' },
+  { id: 'stats', label: 'Node Leader', icon: Trophy, path: '/stats', color: 'bg-orange-500/10 text-orange-600' },
+  { id: 'reinsurance', label: 'Institutional', icon: Landmark, path: '/reinsurance', color: 'bg-blue-500/10 text-blue-600' },
 ];
 
 export default function Dashboard() {

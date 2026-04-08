@@ -5,13 +5,33 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Navigation, Info, Radio, Zap, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const hotspots = [
-  { id: 'koramangala', name: 'Koramangala 4th Block', x: 45, y: 55, risk: 8.2, status: 'Critical', color: 'bg-status-danger' },
-  { id: 'hsr', name: 'HSR Layout Sector 2', x: 65, y: 75, risk: 4.5, status: 'Moderate', color: 'bg-status-warning' },
-  { id: 'indiranagar', name: 'Indiranagar 100ft Rd', x: 55, y: 25, risk: 2.1, status: 'Clear', color: 'bg-emerald-500' },
-  { id: 'whitefield', name: 'Whitefield ITPL', x: 85, y: 45, risk: 3.8, status: 'Moderate', color: 'bg-status-warning' },
-  { id: 'mgroad', name: 'MG Road Metro', x: 40, y: 35, risk: 6.7, status: 'Elevated', color: 'bg-status-danger' },
-];
+const cityData: Record<string, { name: string, hotspots: any[] }> = {
+  bgl: {
+    name: 'Bengaluru',
+    hotspots: [
+      { id: 'koramangala', name: 'Koramangala 4th Block', x: 45, y: 55, risk: 8.2, status: 'Critical', color: 'bg-status-danger' },
+      { id: 'hsr', name: 'HSR Layout Sector 2', x: 65, y: 75, risk: 4.5, status: 'Moderate', color: 'bg-status-warning' },
+      { id: 'indiranagar', name: 'Indiranagar 100ft Rd', x: 55, y: 25, risk: 2.1, status: 'Clear', color: 'bg-emerald-500' },
+      { id: 'whitefield', name: 'Whitefield ITPL', x: 85, y: 45, risk: 3.8, status: 'Moderate', color: 'bg-status-warning' },
+    ]
+  },
+  ldn: {
+    name: 'London',
+    hotspots: [
+      { id: 'shoreditch', name: 'Shoreditch High St', x: 40, y: 40, risk: 6.8, status: 'Elevated', color: 'bg-status-danger' },
+      { id: 'canary', name: 'Canary Wharf Node', x: 75, y: 60, risk: 3.2, status: 'Clear', color: 'bg-emerald-500' },
+      { id: 'soho', name: 'Soho Square', x: 30, y: 50, risk: 5.1, status: 'Moderate', color: 'bg-status-warning' },
+    ]
+  },
+  tky: {
+    name: 'Tokyo',
+    hotspots: [
+      { id: 'shibuya', name: 'Shibuya Crossing', x: 50, y: 50, risk: 9.1, status: 'Critical', color: 'bg-status-danger' },
+      { id: 'shinjuku', name: 'Shinjuku Gyoen', x: 60, y: 35, risk: 2.5, status: 'Clear', color: 'bg-emerald-500' },
+      { id: 'akihabara', name: 'Akihabara Electric', x: 70, y: 45, risk: 4.9, status: 'Moderate', color: 'bg-status-warning' },
+    ]
+  }
+};
 
 // Simulated Mesh Riders
 const meshRiders = [...Array(12)].map((_, i) => ({
@@ -21,9 +41,16 @@ const meshRiders = [...Array(12)].map((_, i) => ({
 }));
 
 export const LiveMap = () => {
+  const [currentCity, setCurrentCity] = useState<'bgl' | 'ldn' | 'tky'>('bgl');
+  const hotspots = cityData[currentCity].hotspots;
   const [selected, setSelected] = useState(hotspots[0]);
   const [showSignal, setShowSignal] = useState(true);
   const [surgeMode, setSurgeMode] = useState(false);
+
+  const handleCityChange = (city: 'bgl' | 'ldn' | 'tky') => {
+    setCurrentCity(city);
+    setSelected(cityData[city].hotspots[0]);
+  };
 
   return (
     <div className="relative w-full h-full bg-[#F1F5F9] overflow-hidden group">
@@ -33,7 +60,6 @@ export const LiveMap = () => {
         <path d="M0,50 Q30,60 50,40 T100,60" fill="none" stroke="#64748B" strokeWidth="0.5" />
         <path d="M20,0 Q30,40 10,60 T30,100" fill="none" stroke="#64748B" strokeWidth="0.5" />
         <path d="M70,0 Q80,50 60,80 T90,100" fill="none" stroke="#64748B" strokeWidth="0.5" />
-        {/* Grids */}
         <line x1="20" y1="0" x2="20" y2="100" stroke="#CBD5E1" strokeWidth="0.1" />
         <line x1="40" y1="0" x2="40" y2="100" stroke="#CBD5E1" strokeWidth="0.1" />
         <line x1="60" y1="0" x2="60" y2="100" stroke="#CBD5E1" strokeWidth="0.1" />
@@ -73,7 +99,6 @@ export const LiveMap = () => {
              <div className={cn("w-4 h-4 rounded-full animate-ping opacity-20 absolute -inset-2", surgeMode ? "bg-primary" : spot.color)} />
              <div className={cn("w-3 h-3 rounded-full shadow-lg border-2 border-white relative z-10 transition-colors duration-500", surgeMode ? "bg-primary" : spot.color)} />
              
-             {/* Label (Visible on hover or if selected) */}
              <AnimatePresence>
                 {(selected.id === spot.id) && (
                    <motion.div 
@@ -94,10 +119,26 @@ export const LiveMap = () => {
         </button>
       ))}
 
+      {/* City Toggle UI */}
+      <div className="absolute bottom-40 left-1/2 -translate-x-1/2 z-30 flex gap-2 p-1.5 bg-white/60 backdrop-blur-xl rounded-full border border-white/40 shadow-xl overflow-x-auto max-w-[90vw] no-scrollbar">
+         {Object.entries(cityData).map(([id, data]) => (
+           <button 
+             key={id}
+             onClick={() => handleCityChange(id as any)}
+             className={cn(
+               "px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap",
+               currentCity === id ? "bg-slate-900 text-white" : "text-ink-hint hover:text-ink-primary"
+             )}
+           >
+             {data.name}
+           </button>
+         ))}
+      </div>
+
       {/* Selected Sector Card Overlay (Bottom) */}
       <div className="absolute bottom-6 left-6 right-6 z-30">
         <motion.div 
-          key={selected.id + (surgeMode ? '-surge' : '')}
+          key={selected.id + (surgeMode ? '-surge' : '') + currentCity}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="bg-white/90 backdrop-blur-xl p-5 rounded-[32px] border border-border-light shadow-2xl flex flex-col gap-4 relative overflow-hidden"
@@ -105,10 +146,10 @@ export const LiveMap = () => {
            <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                  <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner transition-colors duration-500", surgeMode ? "bg-primary/10" : selected.color + "/10")}>
-                    <MapPin className={surgeMode ? "text-primary" : selected.color.replace('bg-', 'text-')} size={24} />
+                    <MapPin className={surgeMode ? "text-primary" : (selected.color?.replace('bg-', 'text-') || 'text-primary')} size={24} />
                  </div>
                  <div>
-                    <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Active Sector</div>
+                    <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">{cityData[currentCity].name} · Sector</div>
                     <div className="text-sm font-black text-ink-primary tracking-tight">{selected.name}</div>
                  </div>
               </div>
@@ -117,12 +158,9 @@ export const LiveMap = () => {
                  <div className="h-10 w-[1px] bg-border-light" />
                  <div className="text-right">
                     <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Risk Score</div>
-                    <div className={cn("text-lg font-mono font-black transition-colors duration-500", surgeMode ? "text-primary" : selected.color.replace('bg-', 'text-'))}>
+                    <div className={cn("text-lg font-mono font-black transition-colors duration-500", surgeMode ? "text-primary" : (selected.color?.replace('bg-', 'text-') || 'text-primary'))}>
                        {(surgeMode ? selected.risk * 1.25 : selected.risk).toFixed(1)}
                     </div>
-                 </div>
-                 <div className={cn("px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest", surgeMode ? "bg-primary/20 text-primary" : selected.color + "/10 " + selected.color.replace('bg-', 'text-'))}>
-                    {surgeMode ? 'Alert' : selected.status}
                  </div>
               </div>
            </div>
@@ -145,12 +183,6 @@ export const LiveMap = () => {
             <Radio size={20} className={cn("transition-transform", showSignal && "scale-110")} />
          </button>
          <button 
-           onClick={() => setSelected(hotspots[0])}
-           className="w-12 h-12 rounded-[20px] bg-white border border-border-light text-ink-muted flex items-center justify-center shadow-lg group hover:bg-ink-primary hover:text-white transition-all"
-         >
-            <Navigation size={20} className="group-hover:scale-110 transition-transform" />
-         </button>
-         <button 
            onClick={() => setSurgeMode(!surgeMode)}
            className={cn(
              "w-12 h-12 rounded-[20px] border flex items-center justify-center shadow-lg group transition-all",
@@ -161,7 +193,6 @@ export const LiveMap = () => {
          </button>
       </div>
 
-      {/* Simulation Indicator */}
       <div className="absolute top-6 left-6 z-30 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-2 border border-white/10">
          <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
          <span className="text-[9px] font-black text-white/80 uppercase tracking-widest">Oracle Mesh Monitoring</span>
