@@ -22,6 +22,8 @@ const meshRiders = [...Array(12)].map((_, i) => ({
 
 export const LiveMap = () => {
   const [selected, setSelected] = useState(hotspots[0]);
+  const [showSignal, setShowSignal] = useState(true);
+  const [surgeMode, setSurgeMode] = useState(false);
 
   return (
     <div className="relative w-full h-full bg-[#F1F5F9] overflow-hidden group">
@@ -42,16 +44,22 @@ export const LiveMap = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-status-danger/5 via-transparent to-emerald-500/5" />
 
       {/* Ghost Riders (Mesh Network) */}
-      {meshRiders.map((rider) => (
-        <motion.div
-          key={rider.id}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.2, 1] }}
-          transition={{ duration: 3, repeat: Infinity, delay: Math.random() * 2 }}
-          style={{ left: `${rider.x}%`, top: `${rider.y}%` }}
-          className="absolute w-2 h-2 bg-emerald-400 rounded-full blur-[2px] z-10 shadow-[0_0_8px_#34D399]"
-        />
-      ))}
+      <AnimatePresence>
+        {showSignal && meshRiders.map((rider) => (
+          <motion.div
+            key={rider.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.2, 1] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 3, repeat: Infinity, delay: Math.random() * 2 }}
+            style={{ left: `${rider.x}%`, top: `${rider.y}%` }}
+            className={cn(
+              "absolute w-2 h-2 rounded-full blur-[2px] z-10 transition-colors duration-500",
+              surgeMode ? "bg-primary shadow-[0_0_8px_#FF6B2B]" : "bg-emerald-400 shadow-[0_0_8px_#34D399]"
+            )}
+          />
+        ))}
+      </AnimatePresence>
 
       {/* Hotspots */}
       {hotspots.map((spot) => (
@@ -61,9 +69,9 @@ export const LiveMap = () => {
           style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
           className="absolute -translate-x-1/2 -translate-y-1/2 group/pin cursor-pointer z-20"
         >
-          <div className="relative">
-             <div className={cn("w-4 h-4 rounded-full animate-ping opacity-20 absolute -inset-2", spot.color)} />
-             <div className={cn("w-3 h-3 rounded-full shadow-lg border-2 border-white relative z-10", spot.color)} />
+          <div className={cn("relative transition-all duration-500", surgeMode && "scale-110")}>
+             <div className={cn("w-4 h-4 rounded-full animate-ping opacity-20 absolute -inset-2", surgeMode ? "bg-primary" : spot.color)} />
+             <div className={cn("w-3 h-3 rounded-full shadow-lg border-2 border-white relative z-10 transition-colors duration-500", surgeMode ? "bg-primary" : spot.color)} />
              
              {/* Label (Visible on hover or if selected) */}
              <AnimatePresence>
@@ -72,10 +80,13 @@ export const LiveMap = () => {
                      initial={{ opacity: 0, scale: 0.8, y: -10 }} 
                      animate={{ opacity: 1, scale: 1, y: -45 }}
                      exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                     className="absolute left-1/2 -translate-x-1/2 bg-ink-primary text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full whitespace-nowrap shadow-xl"
+                     className={cn(
+                        "absolute left-1/2 -translate-x-1/2 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full whitespace-nowrap shadow-xl z-50",
+                        surgeMode ? "bg-primary" : "bg-ink-primary"
+                     )}
                    >
                      {spot.name}
-                     <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-ink-primary rotate-45" />
+                     <div className={cn("absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45", surgeMode ? "bg-primary" : "bg-ink-primary")} />
                    </motion.div>
                 )}
              </AnimatePresence>
@@ -86,46 +97,67 @@ export const LiveMap = () => {
       {/* Selected Sector Card Overlay (Bottom) */}
       <div className="absolute bottom-6 left-6 right-6 z-30">
         <motion.div 
-          key={selected.id}
+          key={selected.id + (surgeMode ? '-surge' : '')}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white/90 backdrop-blur-xl p-5 rounded-3xl border border-border-light shadow-2xl flex items-center justify-between"
+          className="bg-white/90 backdrop-blur-xl p-5 rounded-[32px] border border-border-light shadow-2xl flex flex-col gap-4 relative overflow-hidden"
         >
-           <div className="flex items-center gap-4">
-              <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner", selected.color + "/10")}>
-                 <MapPin className={selected.color.replace('bg-', 'text-')} size={24} />
-              </div>
-              <div>
-                 <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Active Sector</div>
-                 <div className="text-sm font-black text-ink-primary tracking-tight">{selected.name}</div>
-              </div>
-           </div>
-           
-           <div className="flex items-center gap-6">
-              <div className="h-10 w-[1px] bg-border-light" />
-              <div className="text-right">
-                 <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Risk Score</div>
-                 <div className={cn("text-lg font-mono font-black", selected.color.replace('bg-', 'text-'))}>
-                    {selected.risk.toFixed(1)}
+           <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                 <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner transition-colors duration-500", surgeMode ? "bg-primary/10" : selected.color + "/10")}>
+                    <MapPin className={surgeMode ? "text-primary" : selected.color.replace('bg-', 'text-')} size={24} />
+                 </div>
+                 <div>
+                    <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Active Sector</div>
+                    <div className="text-sm font-black text-ink-primary tracking-tight">{selected.name}</div>
                  </div>
               </div>
-              <div className={cn("px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest", selected.color + "/10", selected.color.replace('bg-', 'text-'))}>
-                 {selected.status}
+              
+              <div className="flex items-center gap-6">
+                 <div className="h-10 w-[1px] bg-border-light" />
+                 <div className="text-right">
+                    <div className="text-[10px] font-black text-ink-hint uppercase tracking-widest mb-1">Risk Score</div>
+                    <div className={cn("text-lg font-mono font-black transition-colors duration-500", surgeMode ? "text-primary" : selected.color.replace('bg-', 'text-'))}>
+                       {(surgeMode ? selected.risk * 1.25 : selected.risk).toFixed(1)}
+                    </div>
+                 </div>
+                 <div className={cn("px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest", surgeMode ? "bg-primary/20 text-primary" : selected.color + "/10 " + selected.color.replace('bg-', 'text-'))}>
+                    {surgeMode ? 'Alert' : selected.status}
+                 </div>
               </div>
            </div>
+
+           <button className="w-full py-2.5 bg-surface-sunken hover:bg-surface-raised border border-border-light rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] text-ink-primary transition-all flex items-center justify-center gap-2">
+              <Shield size={12} className="text-primary" /> Multi-City Oracle Active
+           </button>
         </motion.div>
       </div>
 
       {/* Map Control Buttons */}
       <div className="absolute top-6 right-6 flex flex-col gap-3 z-30">
-         <button className="w-12 h-12 rounded-[20px] bg-white border border-border-light flex items-center justify-center shadow-lg group hover:bg-ink-primary hover:text-white transition-all">
-            <Radio size={20} className="group-hover:scale-110 transition-transform" />
+         <button 
+           onClick={() => setShowSignal(!showSignal)}
+           className={cn(
+             "w-12 h-12 rounded-[20px] border flex items-center justify-center shadow-lg group transition-all",
+             showSignal ? "bg-ink-primary text-white border-ink-primary" : "bg-white text-ink-muted border-border-light hover:border-border-mid"
+           )}
+         >
+            <Radio size={20} className={cn("transition-transform", showSignal && "scale-110")} />
          </button>
-         <button className="w-12 h-12 rounded-[20px] bg-white border border-border-light flex items-center justify-center shadow-lg group hover:bg-ink-primary hover:text-white transition-all">
+         <button 
+           onClick={() => setSelected(hotspots[0])}
+           className="w-12 h-12 rounded-[20px] bg-white border border-border-light text-ink-muted flex items-center justify-center shadow-lg group hover:bg-ink-primary hover:text-white transition-all"
+         >
             <Navigation size={20} className="group-hover:scale-110 transition-transform" />
          </button>
-         <button className="w-12 h-12 rounded-[20px] bg-white border border-border-light flex items-center justify-center shadow-lg group hover:bg-ink-primary hover:text-white transition-all">
-            <Zap size={20} className="group-hover:scale-110 transition-transform" />
+         <button 
+           onClick={() => setSurgeMode(!surgeMode)}
+           className={cn(
+             "w-12 h-12 rounded-[20px] border flex items-center justify-center shadow-lg group transition-all",
+             surgeMode ? "bg-primary text-white border-primary shadow-primary/20" : "bg-white text-ink-muted border-border-light hover:border-border-mid"
+           )}
+         >
+            <Zap size={20} className={cn("transition-transform", surgeMode && "scale-110 animate-pulse")} />
          </button>
       </div>
 

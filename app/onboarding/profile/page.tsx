@@ -98,7 +98,10 @@ export default function DeliveryProfile() {
                 Pending
               </div>
            </div>
-           <Card className="p-6 border-dashed border-2 border-border-light bg-surface-raised flex flex-col items-center justify-center text-center gap-4 group hover:border-ink-primary transition-all cursor-pointer">
+           <Card 
+             onClick={() => router.push('/kyc')}
+             className="p-6 border-dashed border-2 border-border-light bg-surface-raised flex flex-col items-center justify-center text-center gap-4 group hover:border-ink-primary transition-all cursor-pointer"
+           >
               <div className="w-14 h-14 rounded-full bg-white border border-border-light flex items-center justify-center text-ink-muted group-hover:scale-110 transition-transform">
                  <ShieldCheck size={24} />
               </div>
@@ -106,7 +109,11 @@ export default function DeliveryProfile() {
                  <div className="text-xs font-bold text-ink-primary italic">Verify Your Identity</div>
                  <p className="text-[10px] text-ink-muted max-w-[200px]">Aadhaar or PAN required for automated payouts</p>
               </div>
-              <Button variant="ghost" className="h-8 text-[9px] uppercase tracking-widest text-primary font-bold">
+              <Button 
+                variant="ghost" 
+                className="h-8 text-[9px] uppercase tracking-widest text-primary font-bold"
+                onClick={(e) => { e.stopPropagation(); router.push('/kyc'); }}
+              >
                  Start Verification <ArrowRight size={12} className="ml-1" />
               </Button>
            </Card>
