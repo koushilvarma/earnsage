@@ -20,11 +20,15 @@ export async function GET() {
   // Logic to simulate dynamic changes based on time
   const hour = new Date().getHours();
   
+  // Random shift to make it feel alive
+  const shift = (Math.random() - 0.5) * 2;
+  weatherState.temperature = Math.round(28 + shift);
+  
   if (hour >= 15 && hour <= 17) {
-    weatherState.condition = 'Storm';
+    weatherState.condition = Math.random() > 0.3 ? 'Storm' : 'Rain';
     weatherState.isSurgeActive = true;
   } else {
-    weatherState.condition = 'Cloudy';
+    weatherState.condition = Math.random() > 0.8 ? 'Cloudy' : 'Clear';
     weatherState.isSurgeActive = false;
   }
 

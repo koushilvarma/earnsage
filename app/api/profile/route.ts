@@ -8,7 +8,9 @@ let userProfile = {
   kycStatus: "PENDING",
   platforms: ["Zomato", "Zepto"],
   protectionTier: "PREMIUM",
-  activeShield: true
+  activeShield: true,
+  walletBalance: 1640.50,
+  lifetimeEarnings: 124500.00
 };
 
 export async function GET() {
