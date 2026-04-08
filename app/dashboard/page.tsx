@@ -233,7 +233,7 @@ export default function Dashboard() {
                  <div className="flex justify-between items-end">
                     <div>
                        <div className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-1">Weekly Payout Cap</div>
-                       <div className="text-mono-xl text-4xl text-white">₹2,100</div>
+                       <div className="text-display-m text-4xl text-white drop-shadow-sm">₹2,100</div>
                     </div>
                     <div className="text-right">
                        <div className="text-[9px] font-bold text-primary uppercase tracking-widest mb-1">Efficiency</div>
