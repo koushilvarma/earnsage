@@ -3,6 +3,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { BottomNav } from './BottomNav';
+import { SessionHUD } from './SessionHUD';
 
 interface MobileWrapperProps {
   children: React.ReactNode;
@@ -18,12 +19,17 @@ export const MobileWrapper: React.FC<MobileWrapperProps> = ({
   return (
     <div className="bg-[#CBD5E1] min-h-screen">
       <main className={cn(
-        "mobile-wrapper shadow-2xl",
+        "mobile-wrapper shadow-2xl overflow-x-hidden",
         withNav && "pb-nav",
         className
       )}>
         {children}
-        {withNav && <BottomNav />}
+        {withNav && (
+            <>
+                <SessionHUD />
+                <BottomNav />
+            </>
+        )}
       </main>
     </div>
   );

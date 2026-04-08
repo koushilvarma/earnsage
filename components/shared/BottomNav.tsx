@@ -19,36 +19,35 @@ export const BottomNav = () => {
   const router = useRouter();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
-      <div className="w-full max-w-[430px] h-[72px] bg-white border-t border-[#E2E8F0] shadow-[0_-4px_20px_rgba(15,23,42,0.06)] px-6 flex items-center justify-between pointer-events-auto pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+      <div className="w-[calc(100%-32px)] max-w-[400px] h-[64px] bg-white/90 backdrop-blur-2xl border border-border-light shadow-[0_10px_40px_rgba(0,0,0,0.1)] px-8 flex items-center justify-between pointer-events-auto rounded-[32px]">
         {navItems.map((item) => {
           const isActive = pathname === item.path;
           return (
             <button
               key={item.path}
               onClick={() => router.push(item.path)}
-              className="relative flex flex-col items-center justify-center gap-1 group py-2"
+              className="relative flex flex-col items-center justify-center gap-1 group py-1"
             >
-              {isActive && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  className="absolute -top-[22px] w-5 h-[3px] bg-primary rounded-full"
-                  transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                />
-              )}
               <item.icon 
-                size={22} 
+                size={20} 
                 className={cn(
-                  "transition-colors duration-200",
-                  isActive ? "text-primary fill-primary/10" : "text-ink-hint group-hover:text-ink-secondary"
+                  "transition-all duration-300",
+                  isActive ? "text-primary scale-110" : "text-ink-hint group-hover:text-ink-secondary"
                 )}
               />
               <span className={cn(
-                "text-[10px] font-body font-semibold tracking-wide transition-colors duration-200",
+                "text-[8px] font-black uppercase tracking-widest transition-colors duration-300",
                 isActive ? "text-primary" : "text-ink-hint"
               )}>
                 {item.label}
               </span>
+              {isActive && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className="absolute -bottom-2 w-1 h-1 bg-primary rounded-full"
+                />
+              )}
             </button>
           );
         })}
